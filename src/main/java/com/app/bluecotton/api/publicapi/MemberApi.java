@@ -20,8 +20,8 @@ public class MemberApi {
 
     @PostMapping("register")
     public ResponseEntity<ApiResponseDTO<Object>> register(@RequestBody MemberVO memberVO){
+        log.info("회원가입테스트");
         memberService.register(memberVO);
-        // 버그버그버그
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponseDTO.of("회원가입이 완료되었습니다"));
     }
 

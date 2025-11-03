@@ -25,7 +25,7 @@ public class MemberResponseDTO {
 
     public MemberResponseDTO(MemberVO memberVO) {
         this.memberName = memberVO.getMemberName();
-        this.memberNickName = memberVO.getMemberNickName();
+        this.memberNickName = memberVO.getMemberNickname();
         this.memberEmail = memberVO.getMemberEmail();
         this.memberAddress = memberVO.getMemberAddress();
         this.memberGender = memberVO.getMemberGender();

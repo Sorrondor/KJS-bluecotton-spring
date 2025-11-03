@@ -4,7 +4,7 @@
 
     <select id="selectAll" resultType="MemberVO">
         SELECT ID, MEMBER_NAME, MEMBER_NICKNAME, MEMBER_EMAIL, MEMBER_PASSWORD, MEMBER_ADDRESS, MEMBER_GENDER, MEMBER_BIRTH, MEMBER_CANDY, MEMBER_RANK, MEMBER_PROVIDER
-        FROM TBL_MEMBER;
+        FROM TBL_MEMBER
     </select>
 
     <select id="existByMemberEmail" parameterType="String" resultType="_boolean">
@@ -35,7 +35,7 @@
 
     <insert id="insert" parameterType="MemberVO">
         INSERT INTO TBL_MEMBER(ID, MEMBER_NAME, MEMBER_NICKNAME, MEMBER_EMAIL, MEMBER_PASSWORD, MEMBER_ADDRESS, MEMBER_GENDER, MEMBER_BIRTH)
-        VALUES(SEQ_MEMBER.NEXTVAL, #{memberName}, #{memberNickName}, #{memberEmail}, #{memberPassword},
+        VALUES(SEQ_MEMBER.NEXTVAL, #{memberName}, #{memberNickname}, #{memberEmail}, #{memberPassword},
         #{memberAddress}, #{memberGender}, #{memberBirth})
     </insert>
 
