@@ -12,5 +12,4 @@ public class ProductReviewVO {
     private String productReviewContent;
     private Long productId;
     private Long memberId;
-    private Long productReviewReportId;
 }

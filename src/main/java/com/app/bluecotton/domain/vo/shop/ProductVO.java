@@ -11,4 +11,8 @@ public class ProductVO {
     private Enum productCategory;
     private Enum productType;
     private Enum productPurchaseType;
+    private String productMainDescription;
+    private String productSubDescription ;
+    private String productWeight;
+    private String productMaterial;
 }
