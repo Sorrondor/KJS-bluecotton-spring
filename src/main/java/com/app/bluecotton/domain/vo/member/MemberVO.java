@@ -35,7 +35,6 @@ public class MemberVO {
     private String memberRank;
     private String memberProvider;
     private String memberPhone;
-<<<<<<< HEAD
 
     {
         this.memberPicturePath = "/default";
@@ -53,7 +52,6 @@ public class MemberVO {
         this.memberNickname = memberInsertSocialVO.getMemberNickname();
         this.memberPictureName = memberInsertSocialVO.getMemberPictureName();
         this.memberPicturePath = memberInsertSocialVO.getMemberPicturePath();
-        this.memberProvider = memberInsertSocialVO.getMemberProvider(); }
-=======
->>>>>>> 738268037b59b6557e0bd6b9c445dcc2cad21ef2
+        this.memberProvider = memberInsertSocialVO.getMemberProvider();
+    }
 };
