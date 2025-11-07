@@ -12,6 +12,7 @@ import java.util.Date;
 public class PostMainDTO {
     private Long postId;
     private String somCategory;
+    private String somTitle;
     private Integer postSomDay;
     private String postTitle;
     private String postContent;
