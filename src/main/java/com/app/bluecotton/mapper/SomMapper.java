@@ -1,5 +1,6 @@
 package com.app.bluecotton.mapper;
 
+import com.app.bluecotton.domain.dto.SomResponseDTO;
 import com.app.bluecotton.domain.vo.som.SomVO;
 import org.apache.ibatis.annotations.Mapper;
 

@@ -48,6 +48,9 @@
         <!-- som response DTO -->
         <typeAlias type="com.app.bluecotton.domain.dto.SomCheckResponseDTO" alias="SomCheckResponseDTO" />
 
+        <!-- som update DTO -->
+        <typeAlias type="com.app.bluecotton.domain.dto.SomCheckResponseDTO" alias="SomImageUpdateDTO" />
+
         <!-- chat -->
         <typeAlias type="com.app.bluecotton.domain.vo.chat.ChatVO" alias="ChatVO" />
         <typeAlias type="com.app.bluecotton.domain.vo.chat.ChatMemberVO" alias="ChatMemberVO" />

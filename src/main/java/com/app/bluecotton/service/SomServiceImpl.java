@@ -1,8 +1,10 @@
 package com.app.bluecotton.service;
 
 import com.app.bluecotton.domain.dto.SomResponseDTO;
+import com.app.bluecotton.domain.vo.som.SomImageVO;
 import com.app.bluecotton.domain.vo.som.SomVO;
 import com.app.bluecotton.exception.SomException;
+import com.app.bluecotton.mapper.SomImageMapper;
 import com.app.bluecotton.mapper.SomMapper;
 import com.app.bluecotton.repository.SomDAO;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import java.util.Optional;
 public class SomServiceImpl implements SomService {
 
     private final SomDAO somDAO;
+    private final SomImageMapper somImageMapper;
 
     //  솜 등록
     @Override
@@ -31,25 +34,79 @@ public class SomServiceImpl implements SomService {
     //  솜 상세 조회
     @Override
     public SomResponseDTO findById(Long somId) {
-        return somDAO.findById(somId).map(SomResponseDTO::new).orElseThrow(() -> new SomException("솜을 불러오지 못했습니다"));
+        SomResponseDTO somResponseDTO = somDAO.findById(somId).map(SomResponseDTO::new).orElseThrow(() -> new SomException("솜을 불러오지 못했습니다"));
+        List<SomImageVO> somImages = somImageMapper.selectImagesBySomId(somId);
+        if(somImages.size() == 0){
+            SomImageVO somImageVO = new SomImageVO();
+            somImageVO.setSomImagePath("https://image-server.ideaflow.co.kr/uploads/1762700261.jpg");
+            somImageVO.setSomId(somId);
+            somImageVO.setSomImageName("1762700261.jpg");
+            somImages.add(somImageVO);
+        }
+        somResponseDTO.setSomImageList(somImages);
+
+        return somResponseDTO;
     }
 
     //  솜 카테고리별 조회
     @Override
-    public List<SomVO> findByCategory(String somCategory) {
-        return somDAO.findByCategory(somCategory);
+    public List<SomResponseDTO> findByCategory(String somCategory) {
+        List<SomResponseDTO> somList = somDAO.findByCategory(somCategory).stream().map((som) -> {
+            SomResponseDTO somResponseDTO1 = new SomResponseDTO(som);
+            List<SomImageVO> somImages = somImageMapper.selectImagesBySomId(som.getId());
+            if(somImages.size() == 0){
+                SomImageVO somImageVO = new SomImageVO();
+                somImageVO.setSomImagePath("https://image-server.ideaflow.co.kr/uploads/1762700261.jpg");
+                somImageVO.setSomId(som.getId());
+                somImageVO.setSomImageName("1762700261.jpg");
+                somImages.add(somImageVO);
+            }
+            somResponseDTO1.setSomImageList(somImages);
+            return somResponseDTO1;
+        }).toList();
+
+        return somList;
     }
 
     //  솜 카테고리별 조회
     @Override
-    public List<SomVO> findByType(String somType) {
-        return somDAO.findByType(somType);
+    public List<SomResponseDTO> findByType(String somType) {
+        List<SomResponseDTO> somList = somDAO.findByType(somType).stream().map((som) -> {
+            SomResponseDTO somResponseDTO1 = new SomResponseDTO(som);
+            List<SomImageVO> somImages = somImageMapper.selectImagesBySomId(som.getId());
+            if(somImages.size() == 0){
+                SomImageVO somImageVO = new SomImageVO();
+                somImageVO.setSomImagePath("https://image-server.ideaflow.co.kr/uploads/1762700261.jpg");
+                somImageVO.setSomId(som.getId());
+                somImageVO.setSomImageName("1762700261.jpg");
+                somImages.add(somImageVO);
+            }
+            somResponseDTO1.setSomImageList(somImages);
+            return somResponseDTO1;
+        }).toList();
+
+
+        return somList;
     }
 
     //  솜 전체 조회
     @Override
-    public List<SomVO> findAllSom() {
-        return somDAO.findAllSom();
+    public List<SomResponseDTO> findAllSom() {
+        List<SomResponseDTO> somList = somDAO.findAllSom().stream().map((som) -> {
+            SomResponseDTO somResponseDTO1 = new SomResponseDTO(som);
+            List<SomImageVO> somImages = somImageMapper.selectImagesBySomId(som.getId());
+            if(somImages.size() == 0){
+                SomImageVO somImageVO = new SomImageVO();
+                somImageVO.setSomImagePath("https://image-server.ideaflow.co.kr/uploads/1762700261.jpg");
+                somImageVO.setSomId(som.getId());
+                somImageVO.setSomImageName("1762700261.jpg");
+                somImages.add(somImageVO);
+            }
+            somResponseDTO1.setSomImageList(somImages);
+            return somResponseDTO1;
+        }).toList();
+
+        return somList;
     }
 
     @Override

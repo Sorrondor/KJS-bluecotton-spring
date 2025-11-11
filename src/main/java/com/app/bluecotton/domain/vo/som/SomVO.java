@@ -1,11 +1,10 @@
 package com.app.bluecotton.domain.vo.som;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +19,6 @@ public class SomVO {
     private Integer somLike;
     private String somContent;
     private Long memberId;
+
+    private List<SomImageVO> somImageList;
 }

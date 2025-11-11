@@ -1,5 +1,6 @@
 package com.app.bluecotton.repository;
 
+import com.app.bluecotton.domain.dto.SomResponseDTO;
 import com.app.bluecotton.domain.vo.som.SomVO;
 import com.app.bluecotton.mapper.MyTestMapper;
 import com.app.bluecotton.mapper.SomMapper;

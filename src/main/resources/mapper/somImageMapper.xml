@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.bluecotton.mapper.SomImageMapper">
+    <insert id="insertImgTemp" parameterType="SomImageVO">
+        <selectKey keyProperty="id" resultType="Long" order="BEFORE">
+            SELECT SEQ_SOM_IMAGE.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO TBL_SOM_IMAGE (ID, SOM_IMAGE_PATH, SOM_IMAGE_NAME)
+        VALUES (#{id}, #{somImagePath}, #{somImageName})
+    </insert>
+
+    <update id="updateImgSomId" parameterType="SomImageUpdateDTO">
+        UPDATE TBL_SOM_IMAGE
+            SET SOM_ID = #{somId}
+        WHERE ID IN
+        <foreach collection="somImageIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="selectImagesBySomId" parameterType="Long" resultType="SomImageVO">
+        SELECT * FROM TBL_SOM_IMAGE
+        WHERE SOM_ID = #{somId}
+    </select>
+
+</mapper>

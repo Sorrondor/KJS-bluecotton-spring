@@ -2,9 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.bluecotton.mapper.SomMapper">
     <!--  솜 등록  -->
-    <insert id="insert" parameterType="SomVO">
+    <insert id="insert" parameterType="SomVO" useGeneratedKeys="false">
+        <selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+            SELECT SEQ_SOM.NEXTVAL FROM DUAL
+        </selectKey>
         INSERT INTO TBL_SOM(ID, SOM_TITLE, SOM_CATEGORY, SOM_ADDRESS, SOM_TYPE, SOM_START_DATE, SOM_END_DATE, SOM_CONTENT, MEMBER_ID)
-        VALUES(SEQ_SOM.NEXTVAL, #{somTitle}, #{somCategory}, #{somAddress}, #{somType}, #{somStartDate}, #{somEndDate}, #{somContent}, #{memberId})
+        VALUES(#{id}, #{somTitle}, #{somCategory}, #{somAddress}, #{somType}, #{somStartDate}, #{somEndDate}, #{somContent}, #{memberId})
     </insert>
     <!--  솜 상세 조회  -->
     <select id="selectById" parameterType="Long" resultType="SomVO">

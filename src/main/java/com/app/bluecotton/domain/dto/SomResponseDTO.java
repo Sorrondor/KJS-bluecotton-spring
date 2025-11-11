@@ -1,12 +1,14 @@
 package com.app.bluecotton.domain.dto;
 
 import com.app.bluecotton.domain.vo.member.MemberVO;
+import com.app.bluecotton.domain.vo.som.SomImageVO;
 import com.app.bluecotton.domain.vo.som.SomVO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -22,6 +24,8 @@ public class SomResponseDTO {
     private Integer somLike;
     private String somContent;
     private Long memberId;
+
+    private List<SomImageVO> somImageList;
 
     public SomResponseDTO(SomVO somVO) {
         this.id = somVO.getId();

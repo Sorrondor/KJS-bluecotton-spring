@@ -14,13 +14,13 @@ public interface SomService {
     public SomResponseDTO findById(Long somId);
 
     //  솜 카테고리별 조회
-    public List<SomVO> findByCategory(String somCategory);
+    public List<SomResponseDTO> findByCategory(String somCategory);
 
     //  솜 타입별 조회
-    public List<SomVO> findByType(String somType);
+    public List<SomResponseDTO> findByType(String somType);
 
     //  솜 전체 조회
-    public List<SomVO> findAllSom();
+    public List<SomResponseDTO> findAllSom();
 
     //  솜 전체 주소 조회
     public List<String> findAllAddress();

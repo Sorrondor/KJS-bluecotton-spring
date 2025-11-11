@@ -1,6 +1,6 @@
 package com.app.bluecotton.domain.vo.som;
 
-import lombok.Data;
+import lombok.*;
 
 @Data
 public class SomImageVO {
