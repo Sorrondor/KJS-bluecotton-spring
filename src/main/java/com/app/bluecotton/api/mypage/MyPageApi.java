@@ -31,7 +31,7 @@ public class MyPageApi {
     public ResponseEntity<ApiResponseDTO> readSom() {
         log.info("솜 정보를 불러옵니다");
         log.info("출력: {}", somService.findAllSom());
-        List<SomVO> data = somService.findAllSom();
+        List<SomResponseDTO> data = somService.findAllSom();
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of("솜 전체를 조회했습니다", data));
     }
 
