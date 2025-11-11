@@ -9,8 +9,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // ✅ 정적 이미지 경로 매핑
+        // ✅ 정적 리소스 매핑
         registry.addResourceHandler("/upload/**")
-                .addResourceLocations("file:///C:/upload/"); // 절대경로 주의
+                .addResourceLocations("file:///C:/upload/");
     }
 }

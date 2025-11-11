@@ -17,13 +17,6 @@ class PostMapperTest {
     @Autowired
     private PostMapper postMapper;
 
-    @Test
-    void selectTest() {
-        List<PostMainDTO> posts = postMapper.select(null, null, 1L);
-        System.out.println("조회된 개수 = " + posts.size());
-        posts.forEach(System.out::println);
-    }
-
     // ✅ 게시글 등록 테스트
     @Test
     void insertTest() {
