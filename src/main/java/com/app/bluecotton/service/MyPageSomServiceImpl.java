@@ -26,4 +26,16 @@ public class MyPageSomServiceImpl implements MyPageSomService {
         myPageSomDAO.insertSomReview(somReviewVO);
     }
 
+    //    마이페이지 솜 인증 호출
+    @Override
+    public List<MyPageSomCheckDTO> readSomCheck(Long id){
+        return myPageSomDAO.readSomCheck(id);
+    }
+
+    //    마이페이지 솜 리뷰 호출
+    @Override
+    public List<MyPageSomReviewDTO> readSomReview(Long id){
+        return myPageSomDAO.readSomReview(id);
+    }
+
 }

@@ -22,5 +22,13 @@ public class MyPageSomDAO {
     public void insertSomReview(SomReviewVO somReviewVO) {
         myPageSomMapper.insertSomReview(somReviewVO);
     }
+    //    마이페이지 솜 인증 호출
+    public List<MyPageSomCheckDTO> readSomCheck(Long id) {
+        return myPageSomMapper.readSomCheck(id);
+    }
+    //    마이페이지 솜 리뷰 호출
+    public List<MyPageSomReviewDTO> readSomReview(Long id) {
+        return myPageSomMapper.readSomReview(id);
+    }
 
 }
