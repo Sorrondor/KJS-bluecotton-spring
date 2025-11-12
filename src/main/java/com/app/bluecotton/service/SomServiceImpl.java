@@ -7,18 +7,14 @@ import com.app.bluecotton.domain.vo.som.SomImageVO;
 import com.app.bluecotton.domain.vo.som.SomJoinVO;
 import com.app.bluecotton.domain.vo.som.SomVO;
 import com.app.bluecotton.exception.SomException;
-import com.app.bluecotton.mapper.SomImageMapper;
-import com.app.bluecotton.service.SomImageService;
 import com.app.bluecotton.repository.SomDAO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -28,7 +24,6 @@ public class SomServiceImpl implements SomService {
 
     private final SomDAO somDAO;
     private final SomImageService somImageService;
-    private final SomService somService;
 
     //  솜 등록
     @Override
@@ -53,7 +48,7 @@ public class SomServiceImpl implements SomService {
             somImageVO.setSomImageName("1762700261.jpg");
             somImages.add(somImageVO);
         }
-        somResponseDTO.setSomCount(somService.selectAllSomJoinList(somId).size());
+        somResponseDTO.setSomCount(somDAO.readSomJoinList(somId).size());
         somResponseDTO.setSomImageList(somImages);
 
         return somResponseDTO;
@@ -72,7 +67,7 @@ public class SomServiceImpl implements SomService {
                 somImageVO.setSomImageName("1762700261.jpg");
                 somImages.add(somImageVO);
             }
-            somResponse.setSomCount(somService.selectAllSomJoinList(som.getId()).size());
+            somResponse.setSomCount(somDAO.readSomJoinList(som.getId()).size());
             somResponse.setSomImageList(somImages);
             return somResponse;
         }).toList();
@@ -92,7 +87,7 @@ public class SomServiceImpl implements SomService {
                 somImageVO.setSomImageName("1762700261.jpg");
                 somImages.add(somImageVO);
             }
-            somResponse.setSomCount(somService.selectAllSomJoinList(som.getId()).size());
+            somResponse.setSomCount(somDAO.readSomJoinList(som.getId()).size());
             somResponse.setSomImageList(somImages);
             return somResponse;
         }).toList();
