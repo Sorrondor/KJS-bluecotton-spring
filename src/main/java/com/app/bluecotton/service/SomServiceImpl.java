@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -29,6 +30,11 @@ public class SomServiceImpl implements SomService {
     @Override
     public void registerSom(SomVO somVO) {
         somDAO.save(somVO);
+    }
+
+    @Override
+    public Integer selectSomMaxPage(Map<String, Object> map) {
+        return somDAO.selectSomMaxPage(map);
     }
 
     //  솜 상세 조회
@@ -48,51 +54,29 @@ public class SomServiceImpl implements SomService {
         return somResponseDTO;
     }
 
-    //  솜 카테고리별 조회
-    @Override
-    public List<SomResponseDTO> findByCategory(String somCategory) {
-        List<SomResponseDTO> somList = somDAO.findByCategory(somCategory).stream().map((som) -> {
-            SomResponseDTO somResponseDTO1 = new SomResponseDTO(som);
-            List<SomImageVO> somImages = somImageMapper.selectImagesBySomId(som.getId());
-            if(somImages.size() == 0){
-                SomImageVO somImageVO = new SomImageVO();
-                somImageVO.setSomImagePath("https://image-server.ideaflow.co.kr/uploads/1762700261.jpg");
-                somImageVO.setSomId(som.getId());
-                somImageVO.setSomImageName("1762700261.jpg");
-                somImages.add(somImageVO);
-            }
-            somResponseDTO1.setSomImageList(somImages);
-            return somResponseDTO1;
-        }).toList();
-
-        return somList;
-    }
-
-    //  솜 카테고리별 조회
-    @Override
-    public List<SomResponseDTO> findByType(String somType) {
-        List<SomResponseDTO> somList = somDAO.findByType(somType).stream().map((som) -> {
-            SomResponseDTO somResponseDTO1 = new SomResponseDTO(som);
-            List<SomImageVO> somImages = somImageMapper.selectImagesBySomId(som.getId());
-            if(somImages.size() == 0){
-                SomImageVO somImageVO = new SomImageVO();
-                somImageVO.setSomImagePath("https://image-server.ideaflow.co.kr/uploads/1762700261.jpg");
-                somImageVO.setSomId(som.getId());
-                somImageVO.setSomImageName("1762700261.jpg");
-                somImages.add(somImageVO);
-            }
-            somResponseDTO1.setSomImageList(somImages);
-            return somResponseDTO1;
-        }).toList();
-
-
-        return somList;
-    }
-
     //  솜 전체 조회
     @Override
     public List<SomResponseDTO> findAllSom() {
         List<SomResponseDTO> somList = somDAO.findAllSom().stream().map((som) -> {
+            SomResponseDTO somResponseDTO1 = new SomResponseDTO(som);
+            List<SomImageVO> somImages = somImageMapper.selectImagesBySomId(som.getId());
+            if(somImages.size() == 0){
+                SomImageVO somImageVO = new SomImageVO();
+                somImageVO.setSomImagePath("https://image-server.ideaflow.co.kr/uploads/1762700261.jpg");
+                somImageVO.setSomId(som.getId());
+                somImageVO.setSomImageName("1762700261.jpg");
+                somImages.add(somImageVO);
+            }
+            somResponseDTO1.setSomImageList(somImages);
+            return somResponseDTO1;
+        }).toList();
+
+        return somList;
+    }
+
+    @Override
+    public List<SomResponseDTO> findByCategoryAndType(Map<String, Object> map){
+        List<SomResponseDTO> somList = somDAO.findSomListByCategoryAndType(map).stream().map((som) -> {
             SomResponseDTO somResponseDTO1 = new SomResponseDTO(som);
             List<SomImageVO> somImages = somImageMapper.selectImagesBySomId(som.getId());
             if(somImages.size() == 0){

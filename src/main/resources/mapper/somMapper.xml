@@ -19,18 +19,50 @@
     <select id="selectSomByCategory" parameterType="String" resultType="SomVO">
         SELECT ID, SOM_TITLE, SOM_CATEGORY, SOM_ADDRESS, SOM_TYPE, SOM_START_DATE, SOM_END_DATE, SOM_LIKE, SOM_CONTENT, MEMBER_ID
         FROM TBL_SOM
-        WHERE SOM_CATEGORY  = #{somCategory}
+        WHERE SOM_CATEGORY = #{somCategory}
+        ORDER BY ID DESC
     </select>
+
+    <select id="selectSomMaxPage" parameterType="Map" resultType="Integer">
+        SELECT CEIL(COUNT(ID) / 9) AS SOM_MAX_PAGE
+        FROM TBL_SOM
+        <where>
+            <if test="somCategory != null and somCategory != '' and somCategory != 'all'">
+                AND SOM_CATEGORY = #{somCategory}
+            </if>
+            <if test="somType != null and somType != '' and somType != 'all'">
+                AND SOM_TYPE = #{somType}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectSomListByCategoryAndType" parameterType="Map" resultType="SomVO">
+        SELECT ID, SOM_TITLE, SOM_CATEGORY, SOM_ADDRESS, SOM_TYPE, SOM_START_DATE, SOM_END_DATE, SOM_LIKE, SOM_CONTENT, MEMBER_ID
+        FROM TBL_SOM
+        <where>
+            <if test="somCategory != null and somCategory != '' and somCategory != 'all'">
+                AND SOM_CATEGORY = #{somCategory}
+            </if>
+            <if test="somType != null and somType != '' and somType != 'all'">
+                AND SOM_TYPE = #{somType}
+            </if>
+        </where>
+        ORDER BY ID DESC
+        OFFSET (#{page} - 1) * 9 ROWS FETCH NEXT 9 ROWS ONLY
+    </select>
+
     <!--  솜 타입별 조회  -->
     <select id="selectSomByType" parameterType="String" resultType="SomVO">
         SELECT ID, SOM_TITLE, SOM_CATEGORY, SOM_ADDRESS, SOM_TYPE, SOM_START_DATE, SOM_END_DATE, SOM_LIKE, SOM_CONTENT, MEMBER_ID
         FROM TBL_SOM
         WHERE SOM_TYPE  = #{somType}
+        ORDER BY ID DESC
     </select>
     <!--  솜 전체 조회  -->
     <select id="selectAll" resultType="SomVO">
         SELECT ID, SOM_TITLE, SOM_CATEGORY, SOM_ADDRESS, SOM_TYPE, SOM_START_DATE, SOM_END_DATE, SOM_LIKE, SOM_CONTENT, MEMBER_ID
         FROM TBL_SOM
+        ORDER BY ID DESC
     </select>
     <!--  솜 전체 주소 조회  -->
     <select id="selectAllAddress" resultType="String">
@@ -86,6 +118,13 @@
         LEFT JOIN TBL_SOM_CHECK_IMAGE sci ON sc.ID = sci.SOM_CHECK_ID
         WHERE sc.ID = #{id}
     </select>
+
+    <insert id="insert" parameterType="SomJoinVO">
+        INSERT INTO TBL_SOM_JOIN
+        VALUES(SEQ_SOM_JOIN.NEXTVAL, #{somId}, #{memberId})
+    </insert>
+    
+    <select id="selectSomMember"
 
     <resultMap id="SomCheckWithImagesMap" type="com.app.bluecotton.domain.dto.SomCheckResponseDTO">
         <id property="id" column="sc_id"/>

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Mapper
@@ -16,11 +17,9 @@ public interface SomMapper {
     //  솜 상세 조회
     public Optional<SomVO> selectById(Long somId);
 
-    //  솜 카테고리별 조회
-    public List<SomVO> selectSomByCategory(String somCategory);
+    public List<SomVO> selectSomListByCategoryAndType(Map<String, Object> map);
 
-    //  솜 타입별 조회
-    public List<SomVO> selectSomByType(String somType);
+    public Integer selectSomMaxPage(Map<String, Object> map);
 
     //  솜 전체 조회
     public List<SomVO> selectAll();

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootTest
 @Slf4j
@@ -28,5 +30,16 @@ public class SomMapperTest {
         somMapper.insert(somVO);
         log.info("{}", somVO.getId());
     }
+
+    @Test
+    public void selectListTest() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("somCategory", "study");
+        params.put("somType", "solo");
+        params.put("page", 1);
+
+        log.info("list: {}", somMapper.selectSomListByCategoryAndType(params));
+    }
+
 
 }

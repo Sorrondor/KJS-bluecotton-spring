@@ -4,6 +4,7 @@ import com.app.bluecotton.domain.dto.SomResponseDTO;
 import com.app.bluecotton.domain.vo.som.SomVO;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface SomService {
@@ -13,11 +14,9 @@ public interface SomService {
     //  솜 상세 조회
     public SomResponseDTO findById(Long somId);
 
-    //  솜 카테고리별 조회
-    public List<SomResponseDTO> findByCategory(String somCategory);
+    public Integer selectSomMaxPage(Map<String, Object> map);
 
-    //  솜 타입별 조회
-    public List<SomResponseDTO> findByType(String somType);
+    public List<SomResponseDTO> findByCategoryAndType(Map<String, Object> map);
 
     //  솜 전체 조회
     public List<SomResponseDTO> findAllSom();
