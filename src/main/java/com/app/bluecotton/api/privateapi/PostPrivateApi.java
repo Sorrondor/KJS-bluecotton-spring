@@ -185,6 +185,6 @@ public class PostPrivateApi {
         MemberResponseDTO currentMember = (MemberResponseDTO) authentication.getPrincipal();
         Long memberId = currentMember.getId();
         postService.registerRecent(memberId, postId);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of("최근본글추가"));
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of("최근 본 글 추가"));
     }
 }
