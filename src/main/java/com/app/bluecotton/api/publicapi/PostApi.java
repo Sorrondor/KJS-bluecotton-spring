@@ -38,10 +38,9 @@ public class PostApi {
                 .body(ApiResponseDTO.of("게시글 목록 조회 완료", posts));
     }
 
-
     @GetMapping("/read/{id}")
-    public ResponseEntity<ApiResponseDTO<PostDetailDTO>> postTestPost(@PathVariable Long id){
-        PostDetailDTO postDetail = postService.selectTest(id);
+    public ResponseEntity<ApiResponseDTO<PostDetailDTO>> getPost(@PathVariable Long id){
+        PostDetailDTO postDetail = postService.getPost(id);
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of("게시글 상세 조회 성공", postDetail));
     }
 

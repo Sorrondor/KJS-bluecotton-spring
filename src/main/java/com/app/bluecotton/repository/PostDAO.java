@@ -1,10 +1,7 @@
 package com.app.bluecotton.repository;
 
 import com.app.bluecotton.domain.dto.post.*;
-import com.app.bluecotton.domain.vo.post.PostCommentVO;
-import com.app.bluecotton.domain.vo.post.PostDraftVO;
-import com.app.bluecotton.domain.vo.post.PostReplyVO;
-import com.app.bluecotton.domain.vo.post.PostVO;
+import com.app.bluecotton.domain.vo.post.*;
 import com.app.bluecotton.mapper.PostMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -15,8 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostDAO {
     private final PostMapper postMapper;
-
-    /* ===================== 🟦 게시글 ===================== */
 
     // 게시글 목록
     public List<PostMainDTO> findPosts(String somCategory, String orderType, Long memberId, String q) {
@@ -131,7 +126,7 @@ public class PostDAO {
         postMapper.insertOrUpdateRecentView(memberId, postId);
     }
 
-    /* ===================== 💬 댓글 / 답글 ===================== */
+    /* ===================== 댓글 / 답글 ===================== */
 
     public void insertComment(PostCommentVO postCommentVO) {
         postMapper.insertComment(postCommentVO);
@@ -149,14 +144,29 @@ public class PostDAO {
         postMapper.deleteReply(replyId);
     }
 
-    public PostDetailDTO selectTest(Long postId) { return postMapper.selectTest(postId); }
-
-    public List<PostCommentDTO> selectCommentTest(Long postId){
-        return postMapper.selectCommentTest(postId);
+    public PostDetailDTO selectPost(Long postId) {
+        return postMapper.selectPost(postId);
     }
 
-    public List<PostReplyDTO> selectReplyTest(Long commentId){
-        return postMapper.selectReplyTest(commentId);
+    public List<PostCommentDTO> selectComment(Long postId){
+        return postMapper.selectComment(postId);
+    }
+
+    public List<PostReplyDTO> selectReply(Long commentId){
+        return postMapper.selectReply(commentId);
+    }
+
+    // 신고
+    public void reportPost(PostReportVO postReportVO) {
+        postMapper.insertPostReport(postReportVO);
+    }
+
+    public void reportComment(PostCommentReportVO PostCommentReportVO) {
+        postMapper.insertPostCommentReport(PostCommentReportVO);
+    }
+
+    public void reportReply(PostReplyReportVO postReplyReportVO) {
+        postMapper.insertPostReplyReport(postReplyReportVO);
     }
 
 }

@@ -4,10 +4,7 @@ import com.app.bluecotton.domain.dto.post.PostDetailDTO;
 import com.app.bluecotton.domain.dto.post.PostMainDTO;
 import com.app.bluecotton.domain.dto.post.PostModifyDTO;
 import com.app.bluecotton.domain.dto.post.SomCategoryDTO;
-import com.app.bluecotton.domain.vo.post.PostCommentVO;
-import com.app.bluecotton.domain.vo.post.PostDraftVO;
-import com.app.bluecotton.domain.vo.post.PostReplyVO;
-import com.app.bluecotton.domain.vo.post.PostVO;
+import com.app.bluecotton.domain.vo.post.*;
 
 import java.util.List;
 
@@ -16,8 +13,13 @@ public interface PostService {
     List<PostMainDTO> getPosts(String somCategory, String orderType
             , Long memberId, String q);
 
-    //    게시물 등록
-    void write(PostVO postVO, List<String> imageUrls);
+    //    임시저장 불러온거 글쓴거
+    void write(PostVO postVO, List<String> imageUrls, Long draftId);
+
+    //  새 글 작성
+    default void write(PostVO postVO, List<String> imageUrls) {
+        write(postVO, imageUrls, null);
+    }
 
     //  카테고리 목록
     List<SomCategoryDTO> getJoinedCategories(Long memberId);
@@ -62,9 +64,16 @@ public interface PostService {
     void toggleReplyLike(Long ReplyId, Long memberId);
 
     // 게시글 상세 조회
-    public PostDetailDTO selectTest(Long postId);
+    public PostDetailDTO getPost(Long postId);
 
     // 최근본글 추가
     public void registerRecent(Long memberId, Long postId);
+
+    // 신고
+    public void reportPost(PostReportVO postReportVO);
+
+    public void reportComment(PostCommentReportVO postCommentReportVO);
+
+    public void reportReply(PostReplyReportVO postReplyReportVO);
 
 }
