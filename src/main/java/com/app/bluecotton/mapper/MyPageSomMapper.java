@@ -14,7 +14,6 @@ public interface MyPageSomMapper {
     public List<SomVO> selectById(Long id);
     // 마이페이지 솜 인증 추가 (부모)
     void insertSomCheck(MyPageSomCheckDTO myPageSomCheckDTO);
-
     // 마이페이지 솜 인증 이미지 추가 (자식)
     void insertSomCheckImage(MyPageSomCheckImageDTO myPageSomCheckImageDTO);
     //    마이페이지 솜 리뷰 추가

@@ -22,15 +22,6 @@ public class MyPageInfoApi {
     private final MemberService memberService;
     private final MyPageInfoService myPageInfoService;
 
-    // 솜 정보 출력
-    @GetMapping("read-som")
-    public ResponseEntity<ApiResponseDTO> readSom() {
-        log.info("솔로솜 및 파티솜 정보를 불러옵니다");
-        log.info("출력: {}", somService.findAllSom());
-        List<SomResponseDTO> data = somService.findAllSom();
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of("솔로솜과 파티솜을 조회했습니다", data));
-    }
-
     // 회원정보 출력
     @GetMapping("read-member")
     public ResponseEntity<ApiResponseDTO> readMember(@RequestParam Long id ){
