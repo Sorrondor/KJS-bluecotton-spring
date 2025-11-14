@@ -18,14 +18,14 @@ public interface SomMapper {
     public void insert(SomVO somVO);
 
     //  솜 상세 조회
-    public Optional<SomVO> selectById(Long somId);
+    public Optional<SomResponseDTO> selectById(Long somId);
 
-    public List<SomVO> selectSomListByCategoryAndType(Map<String, Object> map);
+    public List<SomResponseDTO> selectSomListByCategoryAndType(Map<String, Object> map);
 
     public Integer selectSomMaxPage(Map<String, Object> map);
 
     //  솜 전체 조회
-    public List<SomVO> selectAll();
+    public List<SomResponseDTO> selectAll();
 
     //  솜 전체 주소 조회
     public List<String> selectAllAddress();

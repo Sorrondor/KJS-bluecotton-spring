@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.app.bluecotton.mapper.ChatMessageMapper">
+
+    <!-- 1) 채팅 메시지 조회: 공용 메시지 + DM 모두 포함 -->
+    <select id="selectAll" parameterType="ChatMessageVO" resultType="ChatMessageVO">
+        SELECT
+        ID,
+        CHAT_MESSAGE_TYPE,
+        CHAT_MESSAGE_CONTENT,
+        CHAT_MESSAGE_CREATE_AT,
+        CHAT_ID,
+        CHAT_MESSAGE_SENDER_ID,
+        CHAT_MESSAGE_RECEIVER_ID,
+        CHAT_MESSAGE_READ_STATUS
+        FROM TBL_CHAT_MESSAGE
+        WHERE CHAT_ID = #{chatId}
+        AND (
+        -- 공용 메시지
+        CHAT_MESSAGE_RECEIVER_ID IS NULL
+        -- 나에게 온 DM
+        OR CHAT_MESSAGE_RECEIVER_ID = #{chatMessageReceiverId}
+        -- 내가 보낸 DM
+        OR CHAT_MESSAGE_SENDER_ID = #{chatMessageSenderId}
+        )
+        ORDER BY CHAT_MESSAGE_CREATE_AT ASC
+    </select>
+
+
+    <!-- 2) 메시지 저장 -->
+    <insert id="insert" parameterType="ChatMessageVO">
+        INSERT INTO TBL_CHAT_MESSAGE(ID, CHAT_MESSAGE_TYPE, CHAT_MESSAGE_CONTENT, CHAT_ID, CHAT_MESSAGE_SENDER_ID, CHAT_MESSAGE_RECEIVER_ID)
+        VALUES(SEQ_CHAT_MESSAGE.NEXTVAL, #{chatMessageType}, #{chatMessageContent}, #{chatId}, #{chatMessageSenderId}, #{chatMessageReceiverId})
+    </insert>
+
+
+    <!-- 3) 읽음 처리 -->
+    <update id="updateReadStatus" parameterType="ChatMessageVO">
+        UPDATE TBL_CHAT_MESSAGE
+        SET CHAT_MESSAGE_READ_STATUS = 1
+        WHERE CHAT_ID = #{chatId}
+        AND CHAT_MESSAGE_RECEIVER_ID = #{chatMessageReceiverId}
+    </update>
+
+    <select id="selectMessagesByChatId"
+            parameterType="map"
+            resultType="ChatMessageVO">
+
+        SELECT *
+        FROM (
+        SELECT
+        TCM.ID,
+        TCM.CHAT_MESSAGE_TYPE,
+        TCM.CHAT_MESSAGE_CONTENT,
+        TCM.CHAT_MESSAGE_READ_STATUS,
+        TCM.CHAT_MESSAGE_CREATE_AT,
+        TCM.CHAT_ID,
+        TCM.CHAT_MESSAGE_SENDER_ID,
+        TCM.CHAT_MESSAGE_RECEIVER_ID,
+        ROW_NUMBER() OVER (ORDER BY TCM.ID ASC) AS RN
+        FROM TBL_CHAT_MESSAGE TCM
+        WHERE TCM.CHAT_ID = #{chatId}
+        )
+        WHERE RN &gt; #{offset}
+        AND RN &lt;= (#{offset} + #{limit})
+        ORDER BY RN ASC
+
+    </select>
+
+</mapper>

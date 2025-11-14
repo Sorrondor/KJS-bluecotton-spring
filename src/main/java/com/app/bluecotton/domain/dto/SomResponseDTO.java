@@ -21,15 +21,22 @@ public class SomResponseDTO {
     private String somType;
     private Date somStartDate;
     private Date somEndDate;
-    private Integer somLike;
+    private Integer somLikeCount;
     private String somContent;
     private Integer somCount;
     private Long memberId;
     private Boolean isSomLike;
+    private String somTitleImagePath;
+    private String somTitleImageName;
 
     private List<SomImageVO> somImageList;
     private List<SomJoinResponseDTO> somJoinList;
     private MemberSomLeaderResponseDTO memberSomLeader;
+
+    {
+        this.setSomTitleImagePath("https://image-server.ideaflow.co.kr/uploads/som/2025/11/10/default_post_25987fce-7bfb-43bb-8984-f4bae4daacb5.jpg");
+        this.setSomTitleImageName("som.jpg");
+    }
 
     public SomResponseDTO(SomVO somVO) {
         this.id = somVO.getId();
@@ -39,7 +46,6 @@ public class SomResponseDTO {
         this.somType = somVO.getSomType();
         this.somStartDate = somVO.getSomStartDate();
         this.somEndDate = somVO.getSomEndDate();
-        this.somLike = somVO.getSomLike();
         this.somContent = somVO.getSomContent();
         this.memberId = somVO.getMemberId();
     }

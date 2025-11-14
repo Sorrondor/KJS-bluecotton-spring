@@ -4,6 +4,7 @@ import com.app.bluecotton.domain.dto.ApiResponseDTO;
 import com.app.bluecotton.domain.dto.SomReadResponseDTO;
 import com.app.bluecotton.domain.dto.SomResponseDTO;
 import com.app.bluecotton.domain.vo.som.SomJoinVO;
+import com.app.bluecotton.domain.vo.som.SomLikeVO;
 import com.app.bluecotton.domain.vo.som.SomVO;
 import com.app.bluecotton.service.MemberService;
 import com.app.bluecotton.service.SomService;
@@ -24,6 +25,7 @@ import java.util.Map;
 @RequestMapping("/som/*")
 public class SomApi {
     private final SomService somService;
+    private final MemberService memberService;
 
     //  솜 등록
     @PostMapping("register")
@@ -93,9 +95,25 @@ public class SomApi {
 
     //  솜 좋아요
     @PutMapping("like")
-    public ResponseEntity<ApiResponseDTO> likeSom(@RequestParam Long somId) {
-        somService.addLike(somId);
-        return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of("솜 좋아요가 증가했습니다"));
+    public ResponseEntity<ApiResponseDTO> likeSom(@RequestParam Long somId, @RequestParam String memberEmail, @RequestParam(defaultValue = "false") boolean isLike) {
+        SomLikeVO somLikeVO = new SomLikeVO();
+        String message = null;
+        Map<String, Object> params = new HashMap<>();
+        somLikeVO.setSomId(somId);
+        somLikeVO.setMemberId(memberService.getMemberIdByMemberEmail(memberEmail));
+
+
+        if (!isLike) {
+            somService.insertSomLike(somLikeVO);
+            message = "솜 좋아요가 증가했습니다!";
+        } else {
+            somService.deleteSomLike(somLikeVO);
+            message = "솜 좋아요가 감소했습니다!";
+        }
+        params.put("resultLike", somService.selectIsSomLike(somLikeVO));
+        params.put("likeCount", somService.selectSomLikeCount(somId));
+
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of(message, params));
     }
 
     //  솜 삭제

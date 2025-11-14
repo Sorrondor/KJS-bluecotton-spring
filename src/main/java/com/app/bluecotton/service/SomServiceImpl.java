@@ -42,7 +42,7 @@ public class SomServiceImpl implements SomService {
     //  솜 상세 조회
     @Override
     public SomResponseDTO findById(Long somId, String memberEmail) {
-        SomResponseDTO somResponseDTO = somDAO.findById(somId).map(SomResponseDTO::new).orElseThrow(() -> new SomException("솜을 불러오지 못했습니다"));
+        SomResponseDTO somResponseDTO = somDAO.findById(somId).orElseThrow(() -> new SomException("솜을 불러오지 못했습니다"));
         List<SomImageVO> somImages = somImageService.selectImagesBySomId(somId);
         Long currentMemberId = memberService.getMemberIdByMemberEmail(memberEmail);
         SomLikeVO somLikeVO = new SomLikeVO();
@@ -55,10 +55,8 @@ public class SomServiceImpl implements SomService {
             somImageVO.setSomImageName("1762700261.jpg");
             somImages.add(somImageVO);
         }
-        somResponseDTO.setSomLike(somDAO.selectSomLikeCount(somId));
         somResponseDTO.setIsSomLike(somDAO.selectIsSomLike(somLikeVO));
         somResponseDTO.setMemberSomLeader(new MemberSomLeaderResponseDTO(memberService.getMemberById(somResponseDTO.getMemberId())));
-        somResponseDTO.setSomCount(somDAO.readSomJoinList(somId).size());
         somResponseDTO.setSomJoinList(somDAO.readSomJoinList(somId));
         somResponseDTO.setSomImageList(somImages);
 
@@ -69,7 +67,6 @@ public class SomServiceImpl implements SomService {
     @Override
     public List<SomResponseDTO> findAllSom() {
         List<SomResponseDTO> somList = somDAO.findAllSom().stream().map((som) -> {
-            SomResponseDTO somResponseDTO = new SomResponseDTO(som);
             List<SomImageVO> somImages = somImageService.selectImagesBySomId(som.getId());
             if(somImages.isEmpty()){
                 SomImageVO somImageVO = new SomImageVO();
@@ -78,11 +75,10 @@ public class SomServiceImpl implements SomService {
                 somImageVO.setSomImageName("1762700261.jpg");
                 somImages.add(somImageVO);
             }
-            somResponseDTO.setSomLike(somDAO.selectSomLikeCount(som.getId()));
-            somResponseDTO.setSomCount(somDAO.readSomJoinList(som.getId()).size());
-            somResponseDTO.setSomJoinList(somDAO.readSomJoinList(som.getId()));
-            somResponseDTO.setSomImageList(somImages);
-            return somResponseDTO;
+            som.setSomCount(somDAO.readSomJoinList(som.getId()).size());
+            som.setSomJoinList(somDAO.readSomJoinList(som.getId()));
+            som.setSomImageList(somImages);
+            return som;
         }).toList();
 
         return somList;
@@ -91,7 +87,6 @@ public class SomServiceImpl implements SomService {
     @Override
     public List<SomResponseDTO> findByCategoryAndType(Map<String, Object> map){
         List<SomResponseDTO> somList = somDAO.findSomListByCategoryAndType(map).stream().map((som) -> {
-            SomResponseDTO somResponseDTO = new SomResponseDTO(som);
             List<SomImageVO> somImages = somImageService.selectImagesBySomId(som.getId());
             Long currentMemberId = memberService.getMemberIdByMemberEmail(map.get("memberEmail").toString());
             SomLikeVO somLikeVO = new SomLikeVO();
@@ -104,13 +99,11 @@ public class SomServiceImpl implements SomService {
                 somImageVO.setSomImageName("1762700261.jpg");
                 somImages.add(somImageVO);
             }
-            somResponseDTO.setSomLike(somDAO.selectSomLikeCount(som.getId()));
-            somResponseDTO.setIsSomLike(somDAO.selectIsSomLike(somLikeVO));
-            somResponseDTO.setMemberSomLeader(new MemberSomLeaderResponseDTO(memberService.getMemberById(somResponseDTO.getMemberId())));
-            somResponseDTO.setSomCount(somDAO.readSomJoinList(som.getId()).size());
-            somResponseDTO.setSomJoinList(somDAO.readSomJoinList(som.getId()));
-            somResponseDTO.setSomImageList(somImages);
-            return somResponseDTO;
+            som.setIsSomLike(somDAO.selectIsSomLike(somLikeVO));
+            som.setMemberSomLeader(new MemberSomLeaderResponseDTO(memberService.getMemberById(som.getMemberId())));
+            som.setSomJoinList(somDAO.readSomJoinList(som.getId()));
+            som.setSomImageList(somImages);
+            return som;
         }).toList();
 
         return somList;
