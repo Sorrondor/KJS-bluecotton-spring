@@ -29,6 +29,12 @@ public interface OrderMapper {
 
     public void delete(Long id, Long memberId);
 
+    public Integer findTotalCandyAmountForPendingOrders(Long memberId);
+
+    public List<Long> findPendingCandyOrderIdsByMemberId(Long memberId);
+
+    public void updateOrderStatusForIds( List<Long> orderIds, String orderStatus);
+
     public void detachOrderFromCart(Long memberId);
 
     void insertOrderHeader(Long orderId, List<OrderItemDTO> items);

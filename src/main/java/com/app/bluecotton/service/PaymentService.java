@@ -11,9 +11,13 @@ public interface PaymentService {
 
 
 
-    PortOneDTO processPayment(Map<String, Object> paymentData);
+    public PortOneDTO processPayment(Map<String, Object> paymentData);
 
-    PortOneResponse preparePayment(PaymentPrepareRequest request);
+    public PortOneResponse preparePayment(PaymentPrepareRequest request);
 
     public void verifyPayment(PaymentVerifyRequest request);
+
+//    public void payAllPendingCandyOrders(Long memberId);
+
+    public void payWithCandy(Long memberId, Long orderId);
 }

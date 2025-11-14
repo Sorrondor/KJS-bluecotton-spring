@@ -21,6 +21,35 @@
         )
     </insert>
 
+    <select id="selectMemberCandy" parameterType="long" resultType="int">
+        SELECT MEMBER_CANDY
+        FROM TBL_MEMBER
+        WHERE ID = #{memberId}
+    </select>
+    
+    <select id="selectByMemberIdCandy" parameterType="Long" resultType="map">
+        SELECT TBP.*, TBO.total_price
+        FROM   TBL_PAYMENT TBP
+        JOIN   TBL_ORDER TBO ON TBO.id = TBP.order_id
+        WHERE  TBP.member_id = #{memberId}
+        ORDER BY TBP.PAYMENT_CREATE_AT DESC;
+    </select>
+
+    <select id="selectTotalCandySpentByMemberId" parameterType="long" resultType="int">
+    SELECT NVL(SUM(TBP.PAYMENT_PRICE), 0)
+    FROM   TBL_PAYMENT TBP
+    WHERE  TBP.MEMBER_ID = #{memberId}
+    AND  TBP.PAYMENT_TYPE = 'CANDY'
+    AND  TBP.PAYMENT_STATUS = 'COMPLETED'
+</select>
+
+
+    <update id="updateMemberCandy">
+        UPDATE TBL_MEMBER
+        SET MEMBER_CANDY = MEMBER_CANDY - #{amount}
+        WHERE ID = #{memberId}
+    </update>
+
     <select id="selectByMerchantUid" parameterType="string" resultType="PaymentVO">
         SELECT ID, PAYMENT_PRICE, PAYMENT_TYPE, PAYMENT_STATUS,
         PAYMENT_CREATE_AT, ORDER_ID, MERCHANT_UID, IMP_UID, PAID_AMOUNT

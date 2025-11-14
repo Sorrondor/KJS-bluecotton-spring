@@ -4,6 +4,7 @@ import com.app.bluecotton.domain.dto.PaymentPrepareRequest;
 import com.app.bluecotton.domain.dto.PaymentVerifyRequest;
 import com.app.bluecotton.domain.dto.PortOneDTO;
 import com.app.bluecotton.domain.dto.PortOneResponse;
+import com.app.bluecotton.domain.vo.shop.OrderVO;
 import com.app.bluecotton.domain.vo.shop.PaymentSocialVO;
 import com.app.bluecotton.domain.vo.shop.PaymentStatus;
 import com.app.bluecotton.domain.vo.shop.PaymentVO;
@@ -225,15 +226,55 @@ public class PaymentServiceImpl implements PaymentService {
         paymentData.put("imp_uid", impUid);
         paymentData.put("merchant_uid", merchantUid);
 
-
+        // 1) PortOne 검증 + Payment/PG DB 업데이트
         PortOneDTO dto = processPayment(paymentData);
 
+        // 2) 장바구니 정리는 여기서 memberId 기준으로!
         if (memberId != null) {
             orderService.clearCartAfterOrder(memberId);
             log.info(" 장바구니 삭제 완료: memberId={}", memberId);
         } else {
-            log.warn("장바구니 삭제를 못 했습니다. memberId가 null입니다. merchantUid={}", merchantUid);
+            log.warn("장바구니 삭제 못 함 - memberId가 null입니다. (merchantUid={})", merchantUid);
         }
+    }
+
+    @Override
+    public void payWithCandy(Long memberId, Long orderId) {
+        OrderVO order = orderDAO.selectOrderById(orderId, memberId)
+                .orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
+
+        // 2. 주문 주인 검증
+        if (!order.getMemberId().equals(memberId)) {
+            throw new IllegalStateException("본인 주문만 결제할 수 있습니다.");
+        }
+
+        int amount = Math.toIntExact(order.getOrderTotalPrice());
+
+        // 3. 회원 캔디 잔액 조회
+        int currentCandy = paymentDAO.selectMemberCandy(memberId);
+        if (currentCandy < amount) {
+            throw new IllegalStateException("캔디가 부족합니다.");
+        }
+
+        // 4. 캔디 차감
+        int updated = paymentDAO.updateMemberCandy(memberId, amount);
+        if (updated == 0) {
+            throw new IllegalStateException("캔디 차감에 실패했습니다.");
+        }
+
+        // 5. PAYMENT 테이블에 CANDY 결제 내역 저장
+        PaymentVO payment = new PaymentVO();
+        payment.setMemberId(memberId);
+        payment.setOrderId(orderId);
+        payment.setPaymentPrice(amount);
+        payment.setPaymentType("CANDY"); // enum이면 맞게 변경
+        payment.setPaymentStatus(PaymentStatus.COMPLETED);
+
+        paymentDAO.save(payment);
+
+        // (선택) order 상태 변경이 필요하다면 여기서 처리
+        // orderDAO.updateStatus(orderId, OrderStatus.PAID_BY_CANDY);
+
     }
 
 

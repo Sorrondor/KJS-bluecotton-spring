@@ -56,6 +56,26 @@
         WHERE ID = #{productId}
     </select>
 
+    <select id="findPendingCandyOrderIdsByMemberId" parameterType="long" resultType="long">
+        SELECT TBO.ID
+        FROM TBL_ORDER TBO
+        JOIN TBL_PRODUCT TBP
+        ON TBP.ID = TBO.PRODUCT_ID
+        WHERE TBO.MEMBER_ID = #{memberId}
+        AND TBO.ORDER_STATUS = 'N'
+        AND TBP.PRODUCT_TYPE = 'CANDY'
+    </select>
+
+    <select id="findTotalCandyAmountForPendingOrders" parameterType="long" resultType="int">
+        SELECT NVL(SUM(p.CANDY_PRICE * NVL(o.ORDER_COUNT, 1)), 0) AS total_candy
+        FROM TBL_ORDER TBO
+        JOIN TBL_PRODUCT TBP
+        ON TBP.ID = TBO.PRODUCT_ID
+        WHERE TBO.MEMBER_ID = #{memberId}
+        AND TBO.ORDER_STATUS = 'N'
+        AND TBP.PRODUCT_TYPE = 'CANDY'
+    </select>
+
     <select id="selectAllByMemberId" parameterType="Long" resultType="OrderVO">
         SELECT ORDER_CREATE_AT,
         ORDER_STATUS,
@@ -106,5 +126,13 @@
         AND MEMBER_ID = #{memberId}
     </update>
 
+    <update id="updateOrderStatusForIds">
+        UPDATE TBL_ORDER
+        SET ORDER_STATUS = #{orderStatus}
+        WHERE ID IN
+        <foreach collection="orderIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 
 </mapper>
