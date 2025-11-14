@@ -3,8 +3,11 @@
 <mapper namespace="com.app.bluecotton.mapper.PaymentSocialMapper">
 
     <insert id="insert" parameterType="PaymentSocialVO">
-        INSERT INTO TBL_PAYMENT_SOCIAL(ID, PAYMENT_SOCIAL_NAME, PAYMENT_SOCIAL_NUMBER, PAYMENT_ID )
-        VALUES(SEQ_PAYMENT_SOCIAL.NEXTVAL, #{paymentSocialName}, #{paymentSocialNumber}, #{paymentId})
+        <selectKey keyProperty="id" resultType="long" order="BEFORE">
+            SELECT SEQ_PAYMENT_SOCIAL.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO TBL_PAYMENT_SOCIAL(ID, PAYMENT_SOCIAL_NAME, PAYMENT_SOCIAL_NUMBER, PAYMENT_ID)
+        VALUES(#{id}, #{paymentSocialName}, #{paymentSocialNumber}, #{paymentId})
     </insert>
 
     <select id="selectById" parameterType="Long" resultType="PaymentSocialVO">
@@ -20,9 +23,25 @@
         ORDER BY ID DESC
     </select>
 
+    <select id="findByIdWithPgProvider" parameterType="Long" resultType="PaymentSocialVO">
+        SELECT TBS.ID, TBS.PAYMENT_SOCIAL_NAME, TBS.PAYMENT_SOCIAL_NUMBER, TBS.PAYMENT_ID, TBP.PG_PROVIDER
+        FROM TBL_PAYMENT_SOCIAL TBS
+        JOIN TBL_PAYMENT TBP
+        ON TBS.PAYMENT_ID = TBP.ID
+        WHERE TBS.ID = #{id}
+    </select>
+
+    <select id="findByPaymentIdWithPgProvider" parameterType="Long" resultType="PaymentSocialVO">
+        SELECT ID, PAYMENT_SOCIAL_NAME, PAYMENT_SOCIAL_NUMBER, PAYMENT_ID, PG_PROVIDER
+        FROM TBL_PAYMENT_SOCIAL TBS
+        JOIN TBL_PAYMENT TBP
+        ON TBS.PAYMENT_ID = TBP.ID
+        WHERE TBS.PAYMENT_ID = #{paymentId}
+    </select>
+
     <update id="update" parameterType="PaymentSocialVO">
         UPDATE TBL_PAYMENT_SOCIAL
-        SET PAYMENT_SOCIAL_NAME = #{paymentSocialName}, PAYMENT_SOCIAL_NUMBER = #{paymentSocialNumber}
+        SET PAYMENT_SOCIAL_NAME = #{paymentSocialName}, PAYMENT_SOCIAL_NUMBER = #{paymentSocialNumber}, PAYMENT_ID = #{paymentId}
         WHERE ID = #{id}
     </update>
 

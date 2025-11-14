@@ -9,14 +9,15 @@
 
         INSERT INTO TBL_PAYMENT (
         ID, PAYMENT_PRICE, PAYMENT_TYPE, PAYMENT_STATUS,
-        PAYMENT_CREATE_AT, ORDER_ID, MERCHANT_UID
+        PAYMENT_CREATE_AT, ORDER_ID, MERCHANT_UID, MEMBER_ID
         ) VALUES (
         SEQ_PAYMENT.NEXTVAL, #{paymentPrice},
         #{paymentType},
         #{paymentStatus},
         SYSTIMESTAMP,
         #{orderId},
-        #{merchantUid}
+        #{merchantUid},
+        #{memberId}
         )
     </insert>
 

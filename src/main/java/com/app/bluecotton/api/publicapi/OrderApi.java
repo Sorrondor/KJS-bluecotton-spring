@@ -34,8 +34,8 @@ public class OrderApi {
         Long orderId = orderService.addOrderCart(orderCheckoutDTO);
         log.info("Integrated Order ID: {}", orderId);
 
-        Long memberId = orderCheckoutDTO.getMemberId();
-        orderService.clearCartAfterOrder(memberId);
+//        Long memberId = orderCheckoutDTO.getMemberId();
+//        orderService.clearCartAfterOrder(memberId);
 
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of("장바구니에서 주문하기 성공!", orderId));
     }

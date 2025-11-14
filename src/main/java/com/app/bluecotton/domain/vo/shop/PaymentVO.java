@@ -16,6 +16,7 @@ public class PaymentVO {
     private String merchantUid;
     private String impUid;
     private Long paidAmount;
+    private String pgProvider;
 }
 
 

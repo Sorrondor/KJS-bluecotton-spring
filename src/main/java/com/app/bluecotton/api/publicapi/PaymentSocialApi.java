@@ -32,7 +32,9 @@ public class PaymentSocialApi {
     @GetMapping("option")
     public ResponseEntity<ApiResponseDTO<Optional<PaymentSocialVO>>> getById(@RequestParam Long id) {
         Optional<PaymentSocialVO> paySocial = paymentSocialService.findById(id);
+
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of("소셜 결제 확인 완료", paySocial));
+
     }
 
     @GetMapping("list")
@@ -46,13 +48,13 @@ public class PaymentSocialApi {
     }
 
     @PutMapping("update")
-    public ResponseEntity<ApiResponseDTO<PaymentSocialVO>>  update(@RequestBody PaymentSocialVO paymentSocialVO) {
+    public ResponseEntity<ApiResponseDTO<Void>>  update(@RequestBody PaymentSocialVO paymentSocialVO) {
         paymentSocialService.update(paymentSocialVO);
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of("소셜 결제 업데이트 완료"));
     }
 
     @DeleteMapping("delete")
-    public ResponseEntity<ApiResponseDTO<Boolean>> delete(@RequestParam Long id) {
+    public ResponseEntity<ApiResponseDTO<Void>> delete(@RequestParam Long id) {
         paymentSocialService.deleteById(id);
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of("소셜 결제 삭제 완료"));
     }

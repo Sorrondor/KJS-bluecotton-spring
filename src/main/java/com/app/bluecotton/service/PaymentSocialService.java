@@ -17,5 +17,4 @@ public interface PaymentSocialService {
 
     public void deleteById(Long id);
 
-    Long savePgMeta(Long paymentId, String pgName, String impUid);
 }

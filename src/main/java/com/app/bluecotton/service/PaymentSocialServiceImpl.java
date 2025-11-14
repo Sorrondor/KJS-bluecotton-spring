@@ -34,12 +34,12 @@ public class PaymentSocialServiceImpl implements PaymentSocialService {
 
     @Override
     public List<PaymentSocialVO> findByPaymentId(Long paymentId) {
-        return paymentSocialDAO.findByPaymentId(paymentId);
+        return paymentSocialDAO.findByPaymentIdWithPgProvider(paymentId);
     }
 
     @Override
     public void update(PaymentSocialVO paymentSocialVO) {
-        if(paymentSocialVO.getPaymentId() == null){
+        if(paymentSocialVO.getId() == null){
             throw new IllegalArgumentException("Id는 필수입니다");
         }
         paymentSocialDAO.update(paymentSocialVO);
@@ -50,13 +50,4 @@ public class PaymentSocialServiceImpl implements PaymentSocialService {
         paymentSocialDAO.delete(id);
     }
 
-    @Override
-    public Long savePgMeta(Long paymentId, String pgName, String impUid) {
-        PaymentSocialVO paymentSocialVO = new PaymentSocialVO();
-        paymentSocialVO.setPaymentId(paymentId);
-        paymentSocialVO.setPaymentSocialName(pgName);
-        paymentSocialVO.setPaymentSocialNumber(impUid);
-        paymentSocialDAO.save(paymentSocialVO);
-        return paymentSocialVO.getId();
-    }
 }

@@ -11,9 +11,11 @@ public interface PaymentSocialMapper {
 
     public void insert(PaymentSocialVO paymentSocialVO);
 
-    public Optional<PaymentSocialVO> selectById(Long id);
+    public  Optional<PaymentSocialVO> findById(Long id);
 
-    public List<PaymentSocialVO> selectByPaymentId(Long paymentId);
+    public Optional<PaymentSocialVO> findByIdWithPgProvider(Long id);
+
+    public List<PaymentSocialVO> findByPaymentIdWithPgProvider(Long paymentId);
 
     public void update(PaymentSocialVO paymentSocialVO);
 

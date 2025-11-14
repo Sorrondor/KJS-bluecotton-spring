@@ -8,4 +8,6 @@ public class PaymentSocialVO {
     private String paymentSocialName;
     private String paymentSocialNumber;
     private Long paymentId;
+//    private String pgProvider;
+//    private String impUniqueId;
 }

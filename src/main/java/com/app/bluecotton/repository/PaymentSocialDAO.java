@@ -18,17 +18,20 @@ public class PaymentSocialDAO {
         paymentSocialMapper.insert(paymentSocialVO);
     }
 
-    public List<PaymentSocialVO> findAll(Long paymentId) {
-        return paymentSocialMapper.selectByPaymentId(paymentId);
+    public List<PaymentSocialVO> findByPaymentIdWithPgProvider(Long paymentId) {
+        return paymentSocialMapper.findByPaymentIdWithPgProvider(paymentId);
+    }
+
+    public Optional<PaymentSocialVO> findByIdWithPgProvider(Long id) {
+        return paymentSocialMapper.findByIdWithPgProvider(id);
     }
 
     public Optional<PaymentSocialVO> findById(Long id) {
-        return paymentSocialMapper.selectById(id);
+        return paymentSocialMapper.findById(id);
     }
-
-    public List<PaymentSocialVO> findByPaymentId(Long paymentId) {
-        return paymentSocialMapper.selectByPaymentId(paymentId);
-    }
+//    public List<PaymentSocialVO> findByPaymentId(Long paymentId) {
+//        return paymentSocialMapper.selectByPaymentId(paymentId);
+//    }
 
     public void update(PaymentSocialVO vo) {
         paymentSocialMapper.update(vo);
