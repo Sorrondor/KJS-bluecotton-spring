@@ -30,8 +30,6 @@ public class MemberVO {
     private String memberAddress;
     private String memberDetailAddress;
     private String memberPostcode;
-    private String memberPicturePath;
-    private String memberPictureName;
     private String memberGender;
     private Date memberBirth;
     private Integer memberCandy;
@@ -39,8 +37,6 @@ public class MemberVO {
     private String memberProvider;
 
     {
-        this.memberPicturePath = "/default";
-        this.memberPictureName = "member.jpg";
         this.memberNickname = "임시닉네임";
         this.memberProvider = "local";
         this.memberRank = "rookie";
@@ -52,7 +48,5 @@ public class MemberVO {
         this.memberEmail = memberInsertSocialVO.getMemberEmail();
         this.memberName = memberInsertSocialVO.getMemberName();
         this.memberNickname = memberInsertSocialVO.getMemberNickname();
-        this.memberPictureName = memberInsertSocialVO.getMemberPictureName();
-        this.memberPicturePath = memberInsertSocialVO.getMemberPicturePath();
         this.memberProvider = memberInsertSocialVO.getMemberProvider(); }
 };

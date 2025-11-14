@@ -41,8 +41,6 @@ public class MemberResponseDTO implements Serializable {
     public MemberResponseDTO(MemberVO memberVO) {
         this.id = memberVO.getId();
         this.memberEmail = memberVO.getMemberEmail();
-        this.memberPicturePath = memberVO.getMemberPicturePath();
-        this.memberPictureName = memberVO.getMemberPictureName();
         this.memberName = memberVO.getMemberName();
         this.memberNickname = memberVO.getMemberNickname();
         this.memberProvider = memberVO.getMemberProvider();
