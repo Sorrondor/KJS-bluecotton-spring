@@ -4,7 +4,6 @@ import com.app.bluecotton.domain.vo.chat.ChatMemberVO;
 import com.app.bluecotton.domain.vo.chat.ChatMessageVO;
 import com.app.bluecotton.service.ChatMemberService;
 import com.app.bluecotton.service.ChatMessageService;
-import com.app.bluecotton.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -15,38 +14,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class ChatMessageApi {
+
     private final ChatMessageService chatMessageService;
-    private final ChatService chatService;
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final ChatMemberService chatMemberService;
 
     @MessageMapping("/chat/send")
     public void sendMessage(ChatMessageVO chatMessageVO) {
-        log.info("받은 메시지: {}", chatMessageVO);
-        ChatMemberVO chatMemberVO = new ChatMemberVO(chatMessageVO);
 
-        // 1. 메세지 처리
-        if(chatMessageVO.getChatMessageType().equals("JOIN")){
-            chatMemberService.createChatMember(chatMemberVO);
-        }else if(chatMessageVO.getChatMessageType().equals("LEAVE")){
-            chatMemberService.delete(chatMemberVO);
-        }else if(chatMessageVO.getChatMessageType().equals("MESSAGE")){
-            chatMessageService.insert(chatMessageVO);
+        log.info("메세지 수신: {}", chatMessageVO);
+
+        // 1) JOIN/LEAVE도 모두 메시지 테이블에 저장
+        chatMessageService.insert(chatMessageVO);
+
+        // 2) ChatMember 테이블 동기화 (회원 상태 관리)
+        if ("JOIN".equals(chatMessageVO.getChatMessageType())) {
+            chatMemberService.createChatMember(new ChatMemberVO(chatMessageVO));
+        } else if ("LEAVE".equals(chatMessageVO.getChatMessageType())) {
+            chatMemberService.delete(new ChatMemberVO(chatMessageVO));
         }
 
-        // 2. 브로드캐스트
-        if (chatMessageVO.getChatMessageReceiverId() == null) {
-            // 공용 메시지 → 방 전체에게 전송
-            simpMessagingTemplate.convertAndSend(
-                    "/sub/chat/room/" + chatMemberVO.getChatId(),
-                    chatMemberVO
-            );
-        } else {
-            // 1:1 메시지 → 특정 사용자에게 전송
-            simpMessagingTemplate.convertAndSend(
-                    "/sub/chat/room/" + chatMessageVO.getChatId() + "/" + chatMessageVO.getChatMessageReceiverId(),
-                    chatMemberVO
-            );
-        }
+        // 3) 브로드캐스트 (모든 메시지 전송)
+        simpMessagingTemplate.convertAndSend(
+                "/sub/chat/room/" + chatMessageVO.getChatId(),
+                chatMessageVO
+        );
     }
 }

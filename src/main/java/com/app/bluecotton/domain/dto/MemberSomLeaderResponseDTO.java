@@ -33,5 +33,7 @@ public class MemberSomLeaderResponseDTO implements Serializable {
         this.memberName = memberResponseDTO.getMemberName();
         this.memberNickname = memberResponseDTO.getMemberNickname();
         this.memberProvider = memberResponseDTO.getMemberProvider();
+        this.memberPicturePath = memberResponseDTO.getMemberPicturePath();
+        this.memberPictureName = memberResponseDTO.getMemberPictureName();
     }
 }

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -28,6 +29,10 @@ public class ChatDAO {
 
     public List<ChatVO> findByMemberId(Long memberId){
         return chatMapper.selectChatListByMember(memberId);
+    }
+
+    public Long selectIdByTitleWithMemberId(Map<String, Object> paramMap){
+        return chatMapper.selectIdByTitleWithMemberId(paramMap);
     }
 
     public void delete(Long id){

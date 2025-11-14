@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,5 +24,9 @@ public class ChatMessageDAO {
 
     public List<ChatMessageVO> selectAll(ChatMessageVO chatMessageVO){
         return chatMessageMapper.selectAll(chatMessageVO);
+    }
+
+    public List<ChatMessageVO> selectMessagesByChatId(Map<String, Object> paramMap){
+        return chatMessageMapper.selectMessagesByChatId(paramMap);
     }
 }

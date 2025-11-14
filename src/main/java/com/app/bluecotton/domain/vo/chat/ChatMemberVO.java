@@ -14,9 +14,10 @@ public class ChatMemberVO {
     private String chatMemberRole;
     private String chatMemberStatus;
 
-    public ChatMemberVO(ChatMessageVO chatMessageVO) {
-        this.chatId = chatMessageVO.getChatId();
-        this.memberId = chatMessageVO.getChatMessageSenderId();
-        this.chatMemberRole = "USER";
+    public ChatMemberVO(ChatMessageVO message) {
+        this.chatId = message.getChatId();
+        this.memberId = message.getChatMessageSenderId(); // ★ 여기 매우 중요
+        this.chatMemberRole = "MEMBER";
+        this.chatMemberStatus = "ACTIVE";
     }
 }

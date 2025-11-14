@@ -43,4 +43,29 @@
         AND CHAT_MESSAGE_RECEIVER_ID = #{chatMessageReceiverId}
     </update>
 
+    <select id="selectMessagesByChatId"
+            parameterType="map"
+            resultType="ChatMessageVO">
+
+        SELECT *
+        FROM (
+        SELECT
+        TCM.ID,
+        TCM.CHAT_MESSAGE_TYPE,
+        TCM.CHAT_MESSAGE_CONTENT,
+        TCM.CHAT_MESSAGE_READ_STATUS,
+        TCM.CHAT_MESSAGE_CREATE_AT,
+        TCM.CHAT_ID,
+        TCM.CHAT_MESSAGE_SENDER_ID,
+        TCM.CHAT_MESSAGE_RECEIVER_ID,
+        ROW_NUMBER() OVER (ORDER BY TCM.ID ASC) AS RN
+        FROM TBL_CHAT_MESSAGE TCM
+        WHERE TCM.CHAT_ID = #{chatId}
+        )
+        WHERE RN &gt; #{offset}
+        AND RN &lt;= (#{offset} + #{limit})
+        ORDER BY RN ASC
+
+    </select>
+
 </mapper>

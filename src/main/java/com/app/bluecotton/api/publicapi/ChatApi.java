@@ -54,6 +54,7 @@ public class ChatApi {
 
         ChatMemberVO chatMemberVO = new ChatMemberVO();
         chatMemberVO.setChatMemberRole("OWNER");
+        chatMemberVO.setChatMemberStatus("ACTIVE");
         chatMemberVO.setMemberId(chatCreateDTO.getMemberId());
         chatMemberVO.setChatId(newChatId);
         chatMemberService.createChatMember(chatMemberVO);
