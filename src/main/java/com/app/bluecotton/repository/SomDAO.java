@@ -30,15 +30,15 @@ public class SomDAO {
     }
 
     //  솜 상세 조회
-    public Optional<SomVO> findById(Long somId) {
+    public Optional<SomResponseDTO> findById(Long somId) {
         return somMapper.selectById(somId);
     }
 
-    public List<SomVO> findSomListByCategoryAndType(Map<String, Object> map) {
+    public List<SomResponseDTO> findSomListByCategoryAndType(Map<String, Object> map) {
         return somMapper.selectSomListByCategoryAndType(map);
     }
     //  솜 전체 조회
-    public List<SomVO> findAllSom() {
+    public List<SomResponseDTO> findAllSom() {
         return somMapper.selectAll();
     }
 

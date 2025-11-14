@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.bluecotton.mapper.ChatMapper">
+    <insert id="insertChat" parameterType="ChatVO">
+        <selectKey keyProperty="id" resultType="long" order="BEFORE">
+            SELECT SEQ_CHAT.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO TBL_CHAT(ID, CHAT_TITLE, CHAT_TYPE, CHAT_OWNER_ID, CHAT_STATUS)
+        VALUES(#{id}, #{chatTitle}, #{chatType}, #{chatOwnerId}, #{chatStatus})
+    </insert>
+
+    <select id="selectAllJoinedByMemberId" parameterType="Long" resultType="ChatVO">
+        SELECT TBC.ID, TBC.CHAT_TITLE, TBC.CHAT_TYPE, TBC.CHAT_OWNER_ID, TBC.CHAT_STATUS, TBCM.CHAT_MEMBER_COUNT
+        FROM TBL_CHAT TBC
+        JOIN (
+            SELECT CHAT_ID, COUNT(ID) AS CHAT_MEMBER_COUNT
+            FROM TBL_CHAT_MEMBER
+            GROUP BY CHAT_ID
+        ) TBCM
+        ON TBCM.CHAT_ID = TBC.ID
+        WHERE TBC.CHAT_OWNER_ID = #{memberId}
+    </select>
+
+    <select id="selectChatById">
+        SELECT TBC.ID, TBC.CHAT_TITLE, TBC.CHAT_TYPE, TBC.CHAT_OWNER_ID, TBC.CHAT_STATUS, TBCM.CHAT_MEMBER_COUNT
+        FROM TBL_CHAT TBC
+        JOIN (
+        SELECT CHAT_ID, COUNT(ID) AS CHAT_MEMBER_COUNT
+        FROM TBL_CHAT_MEMBER
+        GROUP BY CHAT_ID
+        ) TBCM
+        ON TBCM.CHAT_ID = TBC.ID
+        WHERE TBC.ID = #{id}
+    </select>
+
+    <select id="selectChatListByMember" parameterType="Long" resultType="ChatVO">
+        SELECT TBC.ID, TBC.CHAT_TITLE, TBC.CHAT_TYPE, TBC.CHAT_OWNER_ID, TBC.CHAT_CREATED_AT, TBC.CHAT_STATUS,
+        NVL(TBCM.CHAT_MEMBER_COUNT, 0) AS CHAT_MEMBER_COUNT
+        FROM TBL_CHAT TBC
+        JOIN TBL_CHAT_MEMBER TCM
+        ON TCM.CHAT_ID = TBC.ID
+        AND TCM.MEMBER_ID = #{memberId}
+        LEFT JOIN (
+            SELECT CHAT_ID, COUNT(ID) AS CHAT_MEMBER_COUNT
+            FROM TBL_CHAT_MEMBER
+            GROUP BY CHAT_ID
+        ) TBCM
+        ON TBCM.CHAT_ID = TBC.ID
+    </select>
+
+
+    <select id="selectAll" resultType="ChatVO">
+        SELECT
+        TBC.ID,
+        TBC.CHAT_TITLE,
+        TBC.CHAT_TYPE,
+        TBC.CHAT_OWNER_ID,
+        TBC.CHAT_STATUS,
+        NVL(TBCM.CHAT_MEMBER_COUNT, 0) AS CHAT_MEMBER_COUNT
+        FROM TBL_CHAT TBC
+        JOIN TBL_CHAT_MEMBER TCM
+        ON TCM.CHAT_ID = TBC.ID
+        LEFT JOIN (
+        SELECT CHAT_ID, COUNT(*) AS CHAT_MEMBER_COUNT
+        FROM TBL_CHAT_MEMBER
+        GROUP BY CHAT_ID
+        ) TBCM
+        ON TBCM.CHAT_ID = TBC.ID
+    </select>
+
+    <delete id="delete" parameterType="Long">
+        DELETE FROM TBL_CHAT
+        WHERE ID = #{id}
+    </delete>
+
+
+    <select id="selectIdByTitleWithMemberId" parameterType="Map" resultType="Long">
+        SELECT TBC.ID
+        FROM TBL_CHAT TBC
+        JOIN TBL_CHAT_MEMBER TCM
+        ON TCM.CHAT_ID = TBC.ID
+        AND TCM.MEMBER_ID = #{memberId}
+        LEFT JOIN (
+        SELECT CHAT_ID, COUNT(ID) AS CHAT_MEMBER_COUNT
+        FROM TBL_CHAT_MEMBER
+        GROUP BY CHAT_ID
+        ) TBCM
+        ON TBCM.CHAT_ID = TBC.ID
+        WHERE TBC.CHAT_TITLE = #{somTitle} TBC.CHAT_OWNER_ID = #{memberId}
+    </select>
+
+</mapper>

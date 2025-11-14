@@ -10,10 +10,35 @@
         VALUES(#{id}, #{somTitle}, #{somCategory}, #{somAddress}, #{somType}, #{somStartDate}, #{somEndDate}, #{somContent}, #{memberId})
     </insert>
     <!--  솜 상세 조회  -->
-    <select id="selectById" parameterType="Long" resultType="SomVO">
-        SELECT ID, SOM_TITLE, SOM_CATEGORY, SOM_ADDRESS, SOM_TYPE, SOM_START_DATE, SOM_END_DATE, SOM_LIKE, SOM_CONTENT, MEMBER_ID
-        FROM TBL_SOM
-        WHERE ID = #{id}
+    <select id="selectById" parameterType="Long" resultType="SomResponseDTO">
+        SELECT TBS.ID, TBS.SOM_TITLE, TBS.SOM_CATEGORY,
+            TBS.SOM_ADDRESS, TBS.SOM_TYPE, TBS.SOM_START_DATE,
+            TBS.SOM_END_DATE, NVL(TBSL.SOM_LIKE, 0) AS SOM_LIKE_COUNT,
+            TBS.SOM_CONTENT, TBS.MEMBER_ID, NVL(TBSJ.SOM_COUNT, 0) AS SOM_COUNT,
+            TBSI.SOM_IMAGE_PATH AS SOM_TITLE_IMAGE_PATH,
+            TBSI.SOM_IMAGE_NAME AS SOM_TITLE_IMAGE_NAME
+        FROM TBL_SOM TBS
+        LEFT JOIN (
+            SELECT SOM_ID, COUNT(ID) AS SOM_LIKE
+            FROM TBL_SOM_LIKE GROUP BY SOM_ID
+        ) TBSL
+        ON TBS.ID = TBSL.SOM_ID
+        LEFT JOIN (
+            SELECT SOM_ID, COUNT(ID) AS SOM_COUNT
+            FROM TBL_SOM_JOIN GROUP BY SOM_ID
+        ) TBSJ
+        ON TBS.ID = TBSJ.SOM_ID
+        LEFT JOIN (
+            SELECT SOM_ID, SOM_IMAGE_PATH, SOM_IMAGE_NAME
+            FROM (
+                SELECT SOM_ID, SOM_IMAGE_PATH, SOM_IMAGE_NAME,
+                ROW_NUMBER() OVER (PARTITION BY SOM_ID ORDER BY ID ASC) AS RN
+                FROM TBL_SOM_IMAGE
+            )
+            WHERE RN = 1
+        ) TBSI
+        ON TBS.ID = TBSI.SOM_ID
+        WHERE TBS.ID = #{id}
     </select>
     <!--  솜 카테고리별 조회  -->
     <select id="selectSomByCategory" parameterType="String" resultType="SomVO">
@@ -36,9 +61,34 @@
         </where>
     </select>
 
-    <select id="selectSomListByCategoryAndType" parameterType="Map" resultType="SomVO">
-        SELECT ID, SOM_TITLE, SOM_CATEGORY, SOM_ADDRESS, SOM_TYPE, SOM_START_DATE, SOM_END_DATE, SOM_LIKE, SOM_CONTENT, MEMBER_ID
-        FROM TBL_SOM
+    <select id="selectSomListByCategoryAndType" parameterType="Map" resultType="SomResponseDTO">
+        SELECT TBS.ID, TBS.SOM_TITLE, TBS.SOM_CATEGORY,
+            TBS.SOM_ADDRESS, TBS.SOM_TYPE, TBS.SOM_START_DATE,
+            TBS.SOM_END_DATE, NVL(TBSL.SOM_LIKE, 0) AS SOM_LIKE_COUNT,
+            TBS.SOM_CONTENT, TBS.MEMBER_ID, NVL(TBSJ.SOM_COUNT, 0) AS SOM_COUNT,
+            TBSI.SOM_IMAGE_PATH AS SOM_TITLE_IMAGE_PATH,
+            TBSI.SOM_IMAGE_NAME AS SOM_TITLE_IMAGE_NAME
+        FROM TBL_SOM TBS
+        LEFT JOIN (
+            SELECT SOM_ID, COUNT(ID) AS SOM_LIKE
+            FROM TBL_SOM_LIKE GROUP BY SOM_ID
+        ) TBSL
+        ON TBS.ID = TBSL.SOM_ID
+        LEFT JOIN (
+            SELECT SOM_ID, COUNT(ID) AS SOM_COUNT
+            FROM TBL_SOM_JOIN GROUP BY SOM_ID
+        ) TBSJ
+        ON TBS.ID = TBSJ.SOM_ID
+        LEFT JOIN (
+            SELECT SOM_ID, SOM_IMAGE_PATH, SOM_IMAGE_NAME
+            FROM (
+                SELECT SOM_ID, SOM_IMAGE_PATH, SOM_IMAGE_NAME,
+                ROW_NUMBER() OVER (PARTITION BY SOM_ID ORDER BY ID ASC) AS RN
+                FROM TBL_SOM_IMAGE
+            )
+            WHERE RN = 1
+        ) TBSI
+        ON TBS.ID = TBSI.SOM_ID
         <where>
             <if test="somCategory != null and somCategory != '' and somCategory != 'all'">
                 AND SOM_CATEGORY = #{somCategory}
@@ -59,10 +109,34 @@
         ORDER BY ID DESC
     </select>
     <!--  솜 전체 조회  -->
-    <select id="selectAll" resultType="SomVO">
-        SELECT ID, SOM_TITLE, SOM_CATEGORY, SOM_ADDRESS, SOM_TYPE, SOM_START_DATE, SOM_END_DATE, SOM_LIKE, SOM_CONTENT, MEMBER_ID
-        FROM TBL_SOM
-        ORDER BY ID DESC
+    <select id="selectAll" resultType="SomResponseDTO">
+        SELECT TBS.ID, TBS.SOM_TITLE, TBS.SOM_CATEGORY,
+        TBS.SOM_ADDRESS, TBS.SOM_TYPE, TBS.SOM_START_DATE,
+        TBS.SOM_END_DATE, NVL(TBSL.SOM_LIKE, 0) AS SOM_LIKE_COUNT,
+        TBS.SOM_CONTENT, TBS.MEMBER_ID, NVL(TBSJ.SOM_COUNT, 0) AS SOM_COUNT,
+        TBSI.SOM_IMAGE_PATH AS SOM_TITLE_IMAGE_PATH,
+        TBSI.SOM_IMAGE_NAME AS SOM_TITLE_IMAGE_NAME
+        FROM TBL_SOM TBS
+        LEFT JOIN (
+        SELECT SOM_ID, COUNT(ID) AS SOM_LIKE
+        FROM TBL_SOM_LIKE GROUP BY SOM_ID
+        ) TBSL
+        ON TBS.ID = TBSL.SOM_ID
+        LEFT JOIN (
+        SELECT SOM_ID, COUNT(ID) AS SOM_COUNT
+        FROM TBL_SOM_JOIN GROUP BY SOM_ID
+        ) TBSJ
+        ON TBS.ID = TBSJ.SOM_ID
+        LEFT JOIN (
+        SELECT SOM_ID, SOM_IMAGE_PATH, SOM_IMAGE_NAME
+        FROM (
+        SELECT SOM_ID, SOM_IMAGE_PATH, SOM_IMAGE_NAME,
+        ROW_NUMBER() OVER (PARTITION BY SOM_ID ORDER BY ID ASC) AS RN
+        FROM TBL_SOM_IMAGE
+        )
+        WHERE RN = 1
+        ) TBSI
+        ON TBS.ID = TBSI.SOM_ID
     </select>
     <!--  솜 전체 주소 조회  -->
     <select id="selectAllAddress" resultType="String">
@@ -164,7 +238,7 @@
 
     <delete id="deleteSomLike" parameterType="SomVO">
         DELETE TBL_SOM_LIKE
-        WHERE SOM_ID = #{somId} AND MEMBER_ID = #{memberId};
+        WHERE SOM_ID = #{somId} AND MEMBER_ID = #{memberId}
     </delete>
 
     <resultMap id="SomCheckWithImagesMap" type="com.app.bluecotton.domain.dto.SomCheckResponseDTO">
