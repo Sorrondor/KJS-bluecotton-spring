@@ -43,18 +43,6 @@ public class PostDAO {
         return postMapper.existsTodayPostInSom(memberId, somId);
     }
 
-    // 게시글 이미지 매핑
-    public void updatePostIdByUrl(String url, Long postId) {
-        postMapper.updatePostIdByUrl(url, postId);
-    }
-
-    public void insertDefaultImage(String postImagePath, String postImageName, Long postId) {
-        postMapper.insertDefaultImage(postImagePath, postImageName, postId);
-    }
-
-    public void insertThumbnail(String url, Long postId) {
-        postMapper.insertThumbnail(url, postId);
-    }
 
     // 게시글 삭제 관련
     public void deletePostById(Long postId) { postMapper.deletePostById(postId); }
@@ -107,9 +95,7 @@ public class PostDAO {
         return postMapper.findByIdForUpdate(id);
     }
 
-    public void update(PostVO postVO) {
-        postMapper.update(postVO);
-    }
+    public void update(PostVO postVO) { postMapper.update(postVO);}
 
 
     // 게시글 좋아요
