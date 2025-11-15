@@ -2,7 +2,6 @@ package com.app.bluecotton.service;
 
 import com.app.bluecotton.domain.dto.post.PostImageUpdateDTO;
 import com.app.bluecotton.domain.vo.post.PostImageVO;
-import com.app.bluecotton.mapper.PostImageMapper;
 import com.app.bluecotton.repository.PostImageDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,6 @@ import java.util.List;
 @Service
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
-
 public class PostImageServiceImpl implements PostImageService {
 
     private final PostImageDAO postImageDAO;
@@ -38,14 +36,14 @@ public class PostImageServiceImpl implements PostImageService {
         postImageDAO.updatePostId(imageId, postId);
     }
 
-//    @Override
-//    public void updateThumbnail(Long imageId, Long postId) {
-//        postImageDAO.updateThumbnail(imageId, postId);
-//    }
-
     @Override
     public void insertDefaultImage(Long postId) {
         postImageDAO.insertDefaultImage(postId);
     }
 
+    // 추가해야 하는 기능 (수정 시 이미지 삭제)
+    @Override
+    public void deleteImageById(Long imageId) {
+        postImageDAO.deleteImageById(imageId);
+    }
 }

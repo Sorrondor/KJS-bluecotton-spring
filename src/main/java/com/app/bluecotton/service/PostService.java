@@ -46,7 +46,7 @@ public interface PostService {
     public PostModifyDTO getPostForUpdate(Long id);
 
     // 게시글 수정
-    public void modifyPost(PostVO postVO);
+    public void modifyPost(PostModifyDTO postModifyDTO);
 
     // 댓글 등록
     public void insertComment(PostCommentVO postCommentVO);

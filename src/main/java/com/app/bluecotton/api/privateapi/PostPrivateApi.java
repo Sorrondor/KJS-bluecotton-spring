@@ -100,10 +100,10 @@ public class PostPrivateApi {
     @PutMapping("/modify/{id}")
     public ResponseEntity<ApiResponseDTO> modifyPost(
             @PathVariable Long id,
-            @RequestBody PostVO postVO
+            @RequestBody PostModifyDTO postModifyDTO
     ) {
-        postVO.setId(id);
-        postService.modifyPost(postVO);
+        postModifyDTO.setId(id);
+        postService.modifyPost(postModifyDTO);
         return ResponseEntity.ok(ApiResponseDTO.of("수정 완료"));
     }
 

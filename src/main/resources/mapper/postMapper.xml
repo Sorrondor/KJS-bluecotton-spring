@@ -11,11 +11,14 @@
         TBP.ID,
         TBS.SOM_CATEGORY,
         TBS.SOM_TITLE,
-        TRUNC(TRUNC(SYSDATE) - TRUNC(TBS.SOM_START_DATE)) + 1 AS POST_SOM_DAY,
+        TRUNC(TRUNC(TBP.POST_CREATE_AT) - TRUNC(TBS.SOM_START_DATE)) + 1 AS POST_SOM_DAY,
         TBP.POST_TITLE,
         TBP.POST_CONTENT,
         TBM.MEMBER_NICKNAME,
-        NVL(TBMP.MEMBER_PROFILE_PATH || TBMP.MEMBER_PROFILE_NAME, '/images/default_profile.png') AS MEMBER_PROFILE_URL,
+        NVL(
+        TBMP.MEMBER_PROFILE_PATH || TBMP.MEMBER_PROFILE_NAME,
+        'https://image-server.ideaflow.co.kr/uploads/default/default_profile.png'
+        ) AS MEMBER_PROFILE_URL,
         TBP.POST_CREATE_AT,
         TBP.POST_READ_COUNT,
 
@@ -601,14 +604,18 @@
     </select>
 
     <!-- 댓글 신고 -->
+    <!-- 댓글 신고 -->
     <insert id="insertPostCommentReport"
             parameterType="com.app.bluecotton.domain.vo.post.PostCommentReportVO">
         INSERT INTO TBL_POST_COMMENT_REPORT (
-        ID, POST_COMMENT_REPORT_CONTENT,
+        ID,
+        POST_COMMENT_REPORT_CONTENT,
         POST_COMMENT_REPORT_CREATE_AT,
-        POST_COMMENT_ID, MEMBER_ID
+        POST_COMMENT_ID,
+        MEMBER_ID
         ) VALUES (
         SEQ_POST_COMMENT_REPORT.NEXTVAL,
+        #{postCommentReportContent},
         SYSTIMESTAMP,
         #{postCommentId},
         #{memberId}

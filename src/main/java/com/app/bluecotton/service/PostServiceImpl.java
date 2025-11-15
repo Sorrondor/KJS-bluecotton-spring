@@ -63,11 +63,6 @@ public class PostServiceImpl implements PostService {
                 // 이미지 → postId 연결
                 postImageService.updatePostId(imageId, postVO.getId());
 
-                // 맨 첫 번째 이미지를 썸네일로
-//                if (isFirst) {
-//                    postImageService.updateThumbnail(imageId, postVO.getId());
-//                    isFirst = false;
-//                }
             }
 
         } else {
@@ -156,8 +151,39 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void modifyPost(PostVO postVO) {
-        postDAO.update(postVO);
+    public void modifyPost(PostModifyDTO postModifyDTO) {
+
+        // 1) 게시글 기본 정보 수정
+        postDAO.update(postModifyDTO.toPostVO());
+        Long postId = postModifyDTO.getId();
+
+        // 2) 삭제된 이미지 제거
+        if (postModifyDTO.getDeleteImageIds() != null) {
+            for (Long imageId : postModifyDTO.getDeleteImageIds()) {
+                postImageService.deleteImageById(imageId);
+            }
+        }
+
+        // 3) 유지되는 이미지 postId 재연결
+        if (postModifyDTO.getPostImageIds() != null) {
+            for (Long imageId : postModifyDTO.getPostImageIds()) {
+                postImageService.updatePostId(imageId, postId);
+            }
+        }
+
+        // 4) 새 이미지 postId 연결
+        if (postModifyDTO.getNewImageIds() != null) {
+            for (Long imageId : postModifyDTO.getNewImageIds()) {
+                postImageService.updatePostId(imageId, postId);
+            }
+        }
+
+        // 5) 최종 이미지 개수 검사 → 하나도 없으면 기본 이미지 생성
+        int finalImageCount = postImageService.selectImagesByPostId(postId).size();
+        if (finalImageCount == 0) {
+            postImageService.insertDefaultImage(postId);
+        }
+
     }
 
     // 댓글 좋아요 토글
