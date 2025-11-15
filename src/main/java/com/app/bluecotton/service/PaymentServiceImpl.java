@@ -243,26 +243,25 @@ public class PaymentServiceImpl implements PaymentService {
         OrderVO order = orderDAO.selectOrderById(orderId, memberId)
                 .orElseThrow(() -> new IllegalArgumentException("주문이 존재하지 않습니다."));
 
-        // 2. 주문 주인 검증
-        if (!order.getMemberId().equals(memberId)) {
-            throw new IllegalStateException("본인 주문만 결제할 수 있습니다.");
-        }
+//
+//        if (!order.getMemberId().equals(memberId)) {
+//            throw new IllegalStateException("본인 주문만 결제할 수 있습니다.");
+//        }
 
         int amount = Math.toIntExact(order.getOrderTotalPrice());
 
-        // 3. 회원 캔디 잔액 조회
+
         int currentCandy = paymentDAO.selectMemberCandy(memberId);
         if (currentCandy < amount) {
             throw new IllegalStateException("캔디가 부족합니다.");
         }
 
-        // 4. 캔디 차감
+
         int updated = paymentDAO.updateMemberCandy(memberId, amount);
         if (updated == 0) {
             throw new IllegalStateException("캔디 차감에 실패했습니다.");
         }
 
-        // 5. PAYMENT 테이블에 CANDY 결제 내역 저장
         PaymentVO payment = new PaymentVO();
         payment.setMemberId(memberId);
         payment.setOrderId(orderId);
@@ -272,8 +271,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         paymentDAO.save(payment);
 
-        // (선택) order 상태 변경이 필요하다면 여기서 처리
-        // orderDAO.updateStatus(orderId, OrderStatus.PAID_BY_CANDY);
+
 
     }
 

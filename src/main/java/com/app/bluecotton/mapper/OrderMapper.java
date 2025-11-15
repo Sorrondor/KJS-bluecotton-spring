@@ -37,5 +37,7 @@ public interface OrderMapper {
 
     public void detachOrderFromCart(Long memberId);
 
-    void insertOrderHeader(Long orderId, List<OrderItemDTO> items);
+    public void insertOrderHeader(Long orderId, List<OrderItemDTO> items);
+
+    public List<DailyRevenue> selectDailyRevenue();
 }

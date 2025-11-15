@@ -108,6 +108,18 @@
         WHERE MEMBER_ID = #{memberId} AND ID = #{id}
     </select>
 
+    <select id="selectDailyRevenue" resultType="com.app.bluecotton.domain.dto.DailyRevenue">
+        SELECT
+        TO_CHAR(ORDER_CREATE_AT, 'YYYY-MM-DD') AS sales_date,
+        SUM(ORDER_TOTAL_PRICE) AS revenue
+        FROM TBL_ORDER
+        WHERE ORDER_STATUS = 'Y'
+        GROUP BY TO_CHAR(ORDER_CREATE_AT, 'YYYY-MM-DD')
+        ORDER BY sales_date
+    </select>
+
+
+
     <update id="updateOrderStatus" parameterType="OrderVO">
         UPDATE TBL_ORDER
         SET ORDER_STATUS ='N'

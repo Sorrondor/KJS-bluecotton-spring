@@ -34,7 +34,6 @@ public class MyBatisConfig {
     }
 
     @Bean
-    //  SqlSession을 만들기 위한 SqlSessionFactory를 제작한다.
     public SqlSessionFactory sqlSessionFactory() throws IOException {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(getDataSource());

@@ -61,6 +61,32 @@ public class PaymentApi {
         return ResponseEntity.ok(ApiResponseDTO.of("결제 검증 및 처리 성공", null));
     }
 
+    @PostMapping("candy")
+    public ResponseEntity<?> payWithCandy(
+            @RequestBody CandyPaymentRequest request
+    ) {
+        Long memberId = request.getMemberId();
+        Long orderId = request.getOrderId();
+
+        if (memberId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "로그인이 필요합니다."));
+        }
+        if (orderId == null) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", "orderId가 필요합니다."));
+        }
+
+        paymentService.payWithCandy(memberId, orderId);
+
+        return ResponseEntity.ok(Map.of(
+                "message", "CANDY_PAYMENT_SUCCESS",
+                "orderId", orderId,
+                "memberId", memberId
+        ));
+    }
+
+
 
 
 
