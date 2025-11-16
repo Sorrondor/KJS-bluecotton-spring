@@ -66,15 +66,13 @@ public class SomApi {
         params.put("page", page);
         params.put("memberEmail", memberEmail);
         params.put("somKeyword", somKeyword);
-
-        log.info("somCategory: {}, somType: {}, page: {}, memberEmail: {}, somKeyword: {}", somCategory, somType, page, memberEmail, somKeyword);
         if (somCategory.equals("all") && somType.equals("all")) {
             message = "솜 전체를 불러왔습니다.";
         } else {
             message = "솜을 조건에 맞게 분류하여 불러왔습니다.";
         }
         List<SomResponseDTO> listData = somService.findByCategoryAndType(params);
-        Integer maxPage = (int)Math.ceil((double)listData.size() / 9);
+        Integer maxPage = somService.selectSomMaxPage(params);
         resultData.put("somList", listData);
         resultData.put("maxPage", maxPage);
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of(message, resultData));

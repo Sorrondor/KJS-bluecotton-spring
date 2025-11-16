@@ -58,6 +58,10 @@
             <if test="somType != null and somType != '' and somType != 'all'">
                 AND SOM_TYPE = #{somType}
             </if>
+            <if test="somKeyword != null and somKeyword != '' and somKeyword != 'all'">
+                AND (SOM_TITLE LIKE '%' || #{somKeyword} || '%'
+                OR SOM_CONTENT LIKE '%' || #{somKeyword} || '%')
+            </if>
         </where>
     </select>
 
