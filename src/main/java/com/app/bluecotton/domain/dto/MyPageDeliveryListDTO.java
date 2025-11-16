@@ -10,6 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class MyPageDeliveryListDTO {
 
+    private Long paymentId;
     private Long orderId;
     private Long deliveryId;
     private Long productId;
