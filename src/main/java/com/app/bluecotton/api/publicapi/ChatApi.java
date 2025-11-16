@@ -6,6 +6,7 @@ import com.app.bluecotton.domain.vo.chat.ChatMemberVO;
 import com.app.bluecotton.domain.vo.chat.ChatVO;
 import com.app.bluecotton.service.ChatMemberService;
 import com.app.bluecotton.service.ChatService;
+import com.app.bluecotton.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ public class ChatApi {
 
     private final ChatService chatService;
     private final ChatMemberService chatMemberService;
+    private final MemberService memberService;
 
     // 채팅방 목록 가져오기
     @GetMapping("/get-rooms")
@@ -66,5 +68,20 @@ public class ChatApi {
     @DeleteMapping("/remove-rooms/{id}")
     public void deleteRoom(@PathVariable Long id) {
         chatService.delete(id);
+    }
+
+    @GetMapping("/join-room")
+    public ResponseEntity<ApiResponseDTO> joinRoom(@RequestParam String somTitle, @RequestParam String memberEmail) {
+
+        ChatMemberVO chatMemberVO = new ChatMemberVO();
+        chatMemberVO.setChatMemberRole("OWNER");
+        chatMemberVO.setChatMemberStatus("ACTIVE");
+        chatMemberVO.setMemberId(memberService.getMemberIdByMemberEmail(memberEmail));
+        chatMemberVO.setChatId(chatService.getChatIdByTitle(somTitle));
+        Integer existingCount = chatMemberService.exists(chatMemberVO);
+        if (existingCount == 0) {
+            chatMemberService.createChatMember(chatMemberVO);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of("채팅방 개설 성공", chatMemberVO));
     }
 }

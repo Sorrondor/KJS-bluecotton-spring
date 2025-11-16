@@ -20,7 +20,9 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void createChat(ChatVO chatVO) {
-        chatDAO.save(chatVO);
+        if (!chatVO.getChatType().equals("JOIN")) {
+            chatDAO.save(chatVO);
+        }
     }
 
     @Override

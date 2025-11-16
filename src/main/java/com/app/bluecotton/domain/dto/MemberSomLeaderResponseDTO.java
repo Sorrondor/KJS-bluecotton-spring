@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -20,6 +21,8 @@ public class MemberSomLeaderResponseDTO implements Serializable {
     private String memberPicturePath;
     private String memberPictureName;
     private String memberProvider;
+
+    private List<MyPageSomReviewDTO> somReviewList;
 
     {
         this.setMemberPicturePath("/default");

@@ -30,6 +30,7 @@ public class SomServiceImpl implements SomService {
     private final MemberService memberService;
     private final ChatService chatService;
     private final ChatMemberService chatMemberService;
+    private final MyPageSomService myPageSomService;
 
     //  솜 등록
     @Override
@@ -62,6 +63,7 @@ public class SomServiceImpl implements SomService {
         }
         memberSomLeaderResponseDTO.setMemberPictureName(memberProfileVO.getMemberProfileName());
         memberSomLeaderResponseDTO.setMemberPicturePath(memberProfileVO.getMemberProfilePath());
+        memberSomLeaderResponseDTO.setSomReviewList(myPageSomService.readSomReview(somResponseDTO.getMemberId()));
         somResponseDTO.setIsSomLike(somDAO.selectIsSomLike(somLikeVO));
         somResponseDTO.setMemberSomLeader(memberSomLeaderResponseDTO);
         somResponseDTO.setSomJoinList(somDAO.readSomJoinList(somId));
@@ -110,6 +112,7 @@ public class SomServiceImpl implements SomService {
             }
             memberSomLeaderResponseDTO.setMemberPictureName(memberProfileVO.getMemberProfileName());
             memberSomLeaderResponseDTO.setMemberPicturePath(memberProfileVO.getMemberProfilePath());
+            memberSomLeaderResponseDTO.setSomReviewList(myPageSomService.readSomReview(som.getMemberId()));
             som.setMemberSomLeader(memberSomLeaderResponseDTO);
             som.setIsSomLike(somDAO.selectIsSomLike(somLikeVO));
             som.setSomJoinList(somDAO.readSomJoinList(som.getId()));
@@ -155,7 +158,7 @@ public class SomServiceImpl implements SomService {
                     new com.app.bluecotton.domain.vo.chat.ChatMemberVO();
             chatMemberVO.setChatId(chatId);
             chatMemberVO.setMemberId(somJoinVO.getMemberId());
-            chatMemberVO.setChatMemberRole("USER");
+            chatMemberVO.setChatMemberRole("MEMBER");
             chatMemberVO.setChatMemberStatus("ACTIVE");
             
             // 채팅방 참여 (이미 참여 중이면 중복 방지됨)

@@ -119,6 +119,7 @@ public class SomApi {
     //  솜 삭제
     @DeleteMapping("withdraw")
     public ResponseEntity<ApiResponseDTO> withdrawSom(@RequestParam Long somId) {
+
         somService.withdraw(somId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponseDTO.of("솜 이 삭제되었습니다"));
     }
