@@ -346,6 +346,21 @@
         WHERE ID = #{id}
     </delete>
 
+
+    <!-- 마이리뷰 : 기존 리뷰 이미지 전부 삭제 -->
+    <delete id="deleteMyReviewImage" parameterType="long">
+        DELETE FROM TBL_PRODUCT_REVIEW_IMAGE
+        WHERE PRODUCT_REVIEW_ID = #{reviewId}
+    </delete>
+
+    <!-- 마이리뷰 : 수정 시 새 이미지 1장 등록 -->
+    <insert id="insertMyReviewImageOnUpdate" parameterType="map">
+        INSERT INTO TBL_PRODUCT_REVIEW_IMAGE
+        (ID, PRODUCT_REVIEW_IMAGE_PATH, PRODUCT_REVIEW_IMAGE_NAME, PRODUCT_REVIEW_ID)
+        VALUES
+        (SEQ_PRODUCT_REVIEW_IMAGE.NEXTVAL, #{imagePath}, #{imageName}, #{reviewId})
+    </insert>
+
     <!-- 마이페이지 구매내역 전체조회 -->
     <select id="selectPurchaseList" parameterType="Long" resultType="com.app.bluecotton.domain.dto.MyPageOrderListDTO">
         SELECT

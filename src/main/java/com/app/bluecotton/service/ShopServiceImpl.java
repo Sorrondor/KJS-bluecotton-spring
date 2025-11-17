@@ -87,6 +87,16 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    public void deleteMyReviewImage(Long id) {
+        shopDAO.deleteMyReviewImage(id);
+    }
+
+    @Override
+    public void insertMyReviewImageOnUpdate(Map<String, Object> updateReview) {
+        shopDAO.insertMyReviewImageOnUpdate(updateReview);
+    }
+
+    @Override
     public List<MyPageOrderListDTO> getMyOrders(Long memberId) {
         return shopDAO.findMyOrders(memberId);
     }
@@ -126,14 +136,18 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public void writeReview(MyPageReviewWriteDTO dto) {
 
-        // 백엔드에서 유효성 검사
         int exist = shopDAO.existProductReview(dto.getProductId(), dto.getMemberId());
         if (exist == 1) {
             throw new IllegalStateException("이미 리뷰를 작성했습니다.");
         }
 
-        // 문제 없다면 리뷰 저장
         shopDAO.insertMyReview(dto);
+
+        if (dto.getImagePath() != null && !dto.getImagePath().isBlank()
+                && dto.getImageName() != null && !dto.getImageName().isBlank()) {
+
+            shopDAO.insertMyReviewImage(dto);
+        }
 
     }
 

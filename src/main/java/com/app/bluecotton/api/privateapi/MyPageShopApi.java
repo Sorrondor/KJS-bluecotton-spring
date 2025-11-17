@@ -101,4 +101,15 @@ public class MyPageShopApi {
     }
 
 
+    // 찜하기 토글
+    @PostMapping("like/toggle")
+    public ResponseEntity<ApiResponseDTO> toggleLike(@RequestBody Map<String, Long> toggle) {
+        Long memberId = toggle.get("memberId");
+        Long productId = toggle.get("productId");
+        shopService.toggleLike(memberId, productId);
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of("찜하기 토글 성공"));
+    }
+
+
+
 }

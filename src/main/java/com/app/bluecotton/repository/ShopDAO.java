@@ -92,6 +92,16 @@ public class ShopDAO {
     }
 
 
+    // 마이리뷰 : 기존 리뷰 이미지 전부 삭제
+    public void deleteMyReviewImage(Long id){
+        shopMapper.deleteMyReviewImage(id);
+    }
+
+    // 마이리뷰 : 수정 시 새 이미지 1장 등록
+    public void insertMyReviewImageOnUpdate(Map<String,Object> updateReview) {
+        shopMapper.insertMyReviewImageOnUpdate(updateReview);
+    }
+
     // ---- 구매 내역 ----
     // 마이페이지(샵) 구매내역 전체조회
     public List<MyPageOrderListDTO> findMyOrders(Long memberId){

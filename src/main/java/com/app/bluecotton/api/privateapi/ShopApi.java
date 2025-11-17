@@ -70,8 +70,8 @@ public class ShopApi {
     ) {
         // id도 넘겨야 함
         reviewParams.put("id", id);
-//        log.info("상세 페이지 리뷰 조회 요청 들어옴: {}", reviewParams);
         List<ProductReviewDetailResponseDTO> reviewProducts = shopService.getProductReviewDetail(reviewParams);
+        log.info("상세 페이지 리뷰 조회 요청 들어옴: {}", reviewProducts);
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponseDTO.of("상품 리뷰 조회 성공",  reviewProducts));
     }
 
