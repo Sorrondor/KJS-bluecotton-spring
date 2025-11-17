@@ -40,7 +40,13 @@ public class MemberServiceImpl implements MemberService {
 
         // 1. 이메일 중복검사
         if(memberDAO.existsByMemberEmail(memberVO.getMemberEmail())) {
-            throw new MemberException("이미 존재하는 회원입니다");
+            throw new MemberException("이미 존재하는 이메일입니다");
+        }
+        if(memberDAO.existsByMemberNickname(memberVO.getMemberNickname())) {
+            throw new MemberException("이미 존재하는 닉네임 입니다");
+        }
+        if(memberDAO.existsByMemberPhone(memberVO.getMemberPhone())) {
+            throw new MemberException("이미 존재하는 전화번호 입니다");
         }
 
         // 2. 비밀번호 암호화
@@ -52,7 +58,7 @@ public class MemberServiceImpl implements MemberService {
         Long memberId = memberVO.getId();
         MemberProfileVO defaultProfileVO = new MemberProfileVO();
         String defaultImgUrl = "https://image-server.ideaflow.co.kr/uploads/default/";
-        String defaultImgName = "솜기본_73d2adad-5a46-47ef-895f-f61aeae71a1b.png";
+        String defaultImgName = "기본이미지_45d06c3e-4f7f-4484-a24d-40021aa8f203.jpg";
 
         defaultProfileVO.setMemberId(memberId);
         defaultProfileVO.setMemberProfilePath(defaultImgUrl);
@@ -88,7 +94,7 @@ public class MemberServiceImpl implements MemberService {
 
         MemberProfileVO defaultProfileVO = new MemberProfileVO();
         String defaultImgUrl = "https://image-server.ideaflow.co.kr/uploads/default/";
-        String defaultImgName = "솜기본_73d2adad-5a46-47ef-895f-f61aeae71a1b.png";
+        String defaultImgName = "기본이미지_45d06c3e-4f7f-4484-a24d-40021aa8f203.jpg";
 
         defaultProfileVO.setMemberId(memberId);
         defaultProfileVO.setMemberProfilePath(defaultImgUrl);

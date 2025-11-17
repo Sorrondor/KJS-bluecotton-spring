@@ -35,6 +35,10 @@ public interface MemberMapper {
     //  이메일 중복 확인
     public boolean existByMemberEmail(String memberEmail);
 
+    public boolean existByMemberNickname(String memberNickname);
+
+    public boolean existByMemberPhone(String memberPhone);
+
     //  회원 정보 수정
     public void update(MemberVO  memberVO);
 

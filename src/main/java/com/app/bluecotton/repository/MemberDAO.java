@@ -32,6 +32,15 @@ public class MemberDAO {
     public boolean existsByMemberEmail(String memberEmail){
         return memberMapper.existByMemberEmail(memberEmail);
     }
+
+    public boolean existsByMemberPhone(String memberPhone){
+        return memberMapper.existByMemberPhone(memberPhone);
+    }
+
+    public boolean existsByMemberNickname(String memberNickname){
+        return memberMapper.existByMemberNickname(memberNickname);
+    }
+
     public String findMemberEmailByNameAndPhone(String memberName, String memberPhone){
         return memberMapper.selectMemberEmailByNameAndPhone(memberName, memberPhone);
     }
