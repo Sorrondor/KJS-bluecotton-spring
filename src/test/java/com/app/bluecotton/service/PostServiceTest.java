@@ -57,7 +57,7 @@ class PostServiceTest {
 
             // 1) 구간별 최대 좋아요 개수 설정
             int maxLikes;
-            if (commentId >= 500 && commentId <= 639) {     // 639 ~ 500
+            if (commentId >= 500 && commentId <= 600) {     // 639 ~ 500
                 maxLikes = 4;
             } else {                                        // 499 ~ 1
                 maxLikes = 15;
