@@ -4,7 +4,7 @@
 
     <select id="selectDailyRevenue" resultType="com.app.bluecotton.domain.dto.DailyRevenue">
         SELECT
-        TO_CHAR(TRUNC(P.PAYMENT_CREATE_AT), 'YYYY-MM-DD') AS payDate,
+        TO_CHAR(TRUNC(P.PAYMENT_CREATE_AT), 'YYYY-MM-DD') AS "DATE",
         SUM(P.PAYMENT_PRICE) AS revenue
         FROM TBL_PAYMENT P
         WHERE P.PAYMENT_STATUS = 'COMPLETED'

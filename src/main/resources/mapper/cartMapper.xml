@@ -12,17 +12,35 @@
     <select id="selectByMemberId" parameterType="Long"
             resultType="com.app.bluecotton.domain.dto.CartResponseDTO">
         SELECT
-        TBC.ID               AS id,
-        TBC.MEMBER_ID        AS memberId,
-        TBC.CART_QUANTITY    AS quantity,
-        TBP.PRODUCT_STOCK    AS productStock,
-        TBC.PRODUCT_ID       AS productId,
-        TBP.PRODUCT_NAME     AS productName,
-        TBP.PRODUCT_PRICE    AS productPrice,
-        TBP.PRODUCT_PURCHASE_TYPE AS productPurchaseType
-        FROM TBL_CART TBC
-        JOIN TBL_PRODUCT TBP ON TBP.ID = TBC.PRODUCT_ID
-        JOIN TBL_MEMBER  TBM ON TBM.ID = TBC.MEMBER_ID
+        TBC.ID                    AS id,
+        TBC.MEMBER_ID             AS memberId,
+        TBC.CART_QUANTITY         AS cartQuantity,
+        TBP.PRODUCT_STOCK         AS productStock,
+        TBC.PRODUCT_ID            AS productId,
+        TBP.PRODUCT_NAME          AS productName,
+        TBP.PRODUCT_PRICE         AS productPrice,
+        TBP.PRODUCT_PURCHASE_TYPE AS productPurchaseType,
+
+        IMG.PRODUCT_IMAGE_PATH    AS productImagePath,
+        IMG.PRODUCT_IMAGE_NAME    AS productImageName,
+        IMG.PRODUCT_IMAGE_URL     AS productImageUrl
+        FROM TBL_CART   TBC
+        JOIN TBL_PRODUCT TBP
+        ON TBP.ID = TBC.PRODUCT_ID
+        JOIN TBL_MEMBER  TBM
+        ON TBM.ID = TBC.MEMBER_ID
+        LEFT JOIN (
+        SELECT
+        PRODUCT_ID,
+        MAX(PRODUCT_IMAGE_PATH)              AS PRODUCT_IMAGE_PATH,
+        MAX(PRODUCT_IMAGE_NAME)              AS PRODUCT_IMAGE_NAME,
+        MAX(PRODUCT_IMAGE_PATH || PRODUCT_IMAGE_NAME)
+        AS PRODUCT_IMAGE_URL
+        FROM TBL_PRODUCT_IMAGE
+        WHERE PRODUCT_IMAGE_TYPE = 'MAIN'
+        GROUP BY PRODUCT_ID
+        ) IMG
+        ON IMG.PRODUCT_ID = TBP.ID
         WHERE TBM.ID = #{memberId}
         ORDER BY TBC.ID DESC
     </select>

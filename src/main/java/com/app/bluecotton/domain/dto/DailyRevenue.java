@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class DailyRevenue {
 
-    private String payDate;
+    private String date;
 
     private Long revenue;
 }

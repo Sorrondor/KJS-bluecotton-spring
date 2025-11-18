@@ -29,6 +29,7 @@ public class CartApi {
     @GetMapping("list")
     public ResponseEntity<ApiResponseDTO<List<CartResponseDTO>>> getCart(@RequestParam Long memberId) {
         List<CartResponseDTO> cartList = cartService.getCartList(memberId);
+        log.info("cartList={}", cartList);
         ApiResponseDTO<List<CartResponseDTO>> apiResponseDTO = new ApiResponseDTO<>("장바구니 요청 성공", cartList);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponseDTO);
     }

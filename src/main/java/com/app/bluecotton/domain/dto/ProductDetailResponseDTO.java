@@ -20,5 +20,4 @@ public class ProductDetailResponseDTO {
     private String productMainImageUrl;
     private String productSubImageUrl;
     private Integer productIsLiked;
-
 }
