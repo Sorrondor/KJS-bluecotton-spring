@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.bluecotton.mapper.OrderMapper">
-    <!-- 바로 결제 시  -->
+
     <insert id="insertSingle" parameterType="com.app.bluecotton.domain.dto.OrderDTO">
         <selectKey keyProperty="id" resultType="long" order="BEFORE">
             SELECT SEQ_ORDER.NEXTVAL FROM DUAL
@@ -108,17 +108,6 @@
         WHERE MEMBER_ID = #{memberId} AND ID = #{id}
     </select>
 
-<!--    <select id="selectDailyRevenue" resultType="com.app.bluecotton.domain.dto.DailyRevenue">-->
-<!--        <![CDATA[-->
-<!--    SELECT-->
-<!--        TO_CHAR(TRUNC(P.PAYMENT_CREATE_AT), 'YYYY-MM-DD') AS date,-->
-<!--        SUM(P.PAYMENT_PRICE) AS revenue-->
-<!--    FROM TBL_PAYMENT P-->
-<!--    WHERE P.PAYMENT_STATUS = 'COMPLETED'-->
-<!--    GROUP BY TRUNC(P.PAYMENT_CREATE_AT)-->
-<!--    ORDER BY TRUNC(P.PAYMENT_CREATE_AT)-->
-<!--    ]]>-->
-<!--    </select>-->
 
     <update id="updateOrderStatus" parameterType="OrderVO">
         UPDATE TBL_ORDER

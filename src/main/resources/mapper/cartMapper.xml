@@ -9,8 +9,7 @@
 
 
 
-    <select id="selectByMemberId" parameterType="Long"
-            resultType="com.app.bluecotton.domain.dto.CartResponseDTO">
+    <select id="selectByMemberId" parameterType="Long" resultType="com.app.bluecotton.domain.dto.CartResponseDTO">
         SELECT
         TBC.ID                    AS id,
         TBC.MEMBER_ID             AS memberId,

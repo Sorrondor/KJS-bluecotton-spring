@@ -15,8 +15,6 @@ public class OrderCartDTO {
     private Long productId;
     private Long cartId;
     private Integer orderQuantity;
-//    private Long totalPrice;
-//    private Integer productPrice;
     private Date orderCreateAt;
     private Character orderStatus;
 }

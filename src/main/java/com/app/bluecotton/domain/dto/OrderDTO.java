@@ -13,7 +13,6 @@ public class OrderDTO {
     private Long id;
     private Long memberId;
     private Long productId;
-//    private Integer productPrice;
     private Date orderCreateAt;
     private Character orderStatus;
     private Integer orderQuantity;
