@@ -19,12 +19,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 
     @Override
     public List<ChatMessageVO> selectAll(ChatMessageVO chatMessageVO) {
-        List<ChatMessageVO> chatMessageVOList = chatMessageDAO.selectAll(chatMessageVO).stream().map((content) -> {
-            MemberResponseDTO memberResponseDTO = memberService.getMemberById(chatMessageVO.getChatMessageSenderId());
-            content.setMemberName(memberResponseDTO.getMemberName());
-
-            return content;
-        }).toList();
+        List<ChatMessageVO> chatMessageVOList = chatMessageDAO.selectAll(chatMessageVO);
         return chatMessageVOList;
     }
 

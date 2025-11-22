@@ -14,8 +14,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ImageServiceLocal {
 
-    private final SomImageService somImageService;
-
     public Map<String, String> uploadToLocal(MultipartFile file, String folder) throws Exception {
 
         // 📌 기본 저장 경로: C:/bluecotton-uploads

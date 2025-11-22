@@ -24,8 +24,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ImageService {
 
-    private final SomImageService somImageService;
-
     public Map<String, String> uploadToImageServer(MultipartFile file, String folder) throws Exception {
         String boundary = "----BlueCottonBoundary" + System.currentTimeMillis();
         String uploadUrl = "https://image-server.ideaflow.co.kr/upload/"

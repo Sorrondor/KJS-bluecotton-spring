@@ -40,9 +40,7 @@ public class ChatMessagesApi {
             @RequestParam(defaultValue = "0") int offset,
             @RequestParam(defaultValue = "50") int limit
     ) {
-        List<ChatMessageVO> messages = chatMessageService.getMessages(chatId, offset, limit);
-
-        return messages;
+        return chatMessageService.getMessages(chatId, offset, limit);
     }
 
 }

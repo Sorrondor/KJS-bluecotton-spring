@@ -58,7 +58,7 @@ public class SomServiceImpl implements SomService {
             SomImageVO somImageVO = new SomImageVO();
             somImageVO.setSomImagePath("https://image-server.ideaflow.co.kr/uploads/som/2025/11/10/default_post_25987fce-7bfb-43bb-8984-f4bae4daacb5.jpg");
             somImageVO.setSomId(somId);
-            somImageVO.setSomImageName("1762700261.jpg");
+            somImageVO.setSomImageName("default_post_25987fce-7bfb-43bb-8984-f4bae4daacb5.jpg");
             somImages.add(somImageVO);
         }
         memberSomLeaderResponseDTO.setMemberPictureName(memberProfileVO.getMemberProfileName());
