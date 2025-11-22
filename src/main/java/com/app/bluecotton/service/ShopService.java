@@ -14,6 +14,7 @@ public interface ShopService {
     // 상세 페이지 상단 조회
     ProductDetailResponseDTO getProductDetailHeader(Long id, Long memberId);
 
+
     // 상세 페이지 상품 상단 찜하기 로직
     ProductDetailResponseDTO getProductDetailLike(Long productId, Long memberId);
 

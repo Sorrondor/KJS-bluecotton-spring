@@ -150,16 +150,17 @@
         FROM TBL_PRODUCT_IMAGE TBPI
         WHERE TBPI.PRODUCT_ID = TBP.ID
         AND TBPI.PRODUCT_IMAGE_TYPE = 'MAIN'
-        AND ROWNUM = 1) AS PRODUCT_MAIN_IMAGE_URL,
-
-        (SELECT LISTAGG(TBPI.PRODUCT_IMAGE_PATH || TBPI.PRODUCT_IMAGE_NAME, ',')
-        WITHIN GROUP (ORDER BY TBPI.ID)
-        FROM TBL_PRODUCT_IMAGE TBPI
-        WHERE TBPI.PRODUCT_ID = TBP.ID
-        AND TBPI.PRODUCT_IMAGE_TYPE = 'SUB') AS PRODUCT_SUB_IMAGE_URL
+        AND ROWNUM = 1) AS PRODUCT_MAIN_IMAGE_URL
 
         FROM TBL_PRODUCT TBP
         WHERE TBP.ID = #{id}
+    </select>
+    
+    <select id="selectProductSubImages" parameterType="long" resultType="string">
+        SELECT TBPI.PRODUCT_IMAGE_PATH || TBPI.PRODUCT_IMAGE_NAME
+        FROM TBL_PRODUCT_IMAGE TBPI
+        WHERE TBPI.PRODUCT_ID = #{productId}
+        AND TBPI.PRODUCT_IMAGE_TYPE = 'SUB'
     </select>
 
     <!-- 상품 상세 페이지 찜하기 -->

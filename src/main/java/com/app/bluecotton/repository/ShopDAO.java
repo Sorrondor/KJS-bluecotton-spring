@@ -37,6 +37,11 @@ public class ShopDAO {
         return shopMapper.selectProductDetailHeader(params);
     }
 
+    // 상세 페이지 서브 이미지 조회
+    public List<String> findProductSubImages(Long productId) {
+        return shopMapper.selectProductSubImages(productId);
+    }
+
     // 상세 페이지 상품 상단 찜하기 로직
     public ProductDetailResponseDTO findProductDetailHeaderLike(Long productId, Long memberId) {
         Map<String, Object> likeParams = new HashMap<>();

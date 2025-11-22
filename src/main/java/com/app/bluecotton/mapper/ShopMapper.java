@@ -23,6 +23,8 @@ public interface ShopMapper {
     // 상세 페이지 상품 상단 조회
     public ProductDetailResponseDTO selectProductDetailHeader(Map<String,Object> likeParams);
 
+    // 상세 페이지 서브 이미지 조회
+    public List<String> selectProductSubImages(Long productId);
 
     // 상세 페이지 상품 상단 찜하기 로직
     public ProductDetailResponseDTO selectProductDetailHeaderLike(Map<String,Object> like);

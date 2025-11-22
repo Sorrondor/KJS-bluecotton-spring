@@ -5,6 +5,8 @@ import com.app.bluecotton.domain.vo.shop.ProductType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 public class ProductDetailResponseDTO {
@@ -20,4 +22,5 @@ public class ProductDetailResponseDTO {
     private String productMainImageUrl;
     private String productSubImageUrl;
     private Integer productIsLiked;
+    private List<String> productSubImages;
 }

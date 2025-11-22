@@ -25,14 +25,29 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public ProductDetailResponseDTO getProductDetailHeader(Long id, Long memberId) {
-        return shopDAO.findProductDetailHeader(id, memberId);
+
+        ProductDetailResponseDTO productDetailResponseDTO = shopDAO.findProductDetailHeader(id, memberId);
+
+        if(productDetailResponseDTO == null){
+            return null;
+        }
+
+        List<String> subImages = shopDAO.findProductSubImages(id);
+        productDetailResponseDTO.setProductSubImages(subImages);
+
+        return productDetailResponseDTO;
+
     }
+
+
 
     @Override
     public ProductDetailResponseDTO getProductDetailLike(Long productId, Long memberId) {
         toggleLike(memberId, productId);
         return shopDAO.findProductDetailHeaderLike(productId, memberId);
     }
+
+
 
     @Override
     public ProductInfoDetailResponseDTO getProductDetailInfo(Long id) {
