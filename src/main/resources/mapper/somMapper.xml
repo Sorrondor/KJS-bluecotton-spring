@@ -115,7 +115,7 @@
         TBS.SOM_END_DATE, NVL(TBSL.SOM_LIKE, 0) AS SOM_LIKE_COUNT,
         TBS.SOM_CONTENT, TBS.MEMBER_ID, NVL(TBSJ.SOM_COUNT, 0) AS SOM_COUNT,
         TBSI.SOM_IMAGE_PATH AS SOM_TITLE_IMAGE_PATH,
-        TBSI.SOM_IMAGE_NAME AS SOM_TITLE_IMAGE_NAME, CEIL(TBS.COUNT(ID) / 9) AS SOM_MAX_PAGE
+        TBSI.SOM_IMAGE_NAME AS SOM_TITLE_IMAGE_NAME
         FROM TBL_SOM TBS
         LEFT JOIN (
         SELECT SOM_ID, COUNT(ID) AS SOM_LIKE
@@ -215,12 +215,23 @@
         WHERE SOM_ID = #{somId} AND MEMBER_ID = #{memberId}
     </delete>
 
+    <delete id="deleteSomJoinById" parameterType="Long">
+        DELETE FROM TBL_SOM_JOIN
+        WHERE ID = #{id}
+    </delete>
+
     <insert id="insertSomLike" parameterType="SomLikeVO">
         INSERT INTO TBL_SOM_LIKE VALUES (SEQ_SOM_LIKE.NEXTVAL, #{somId}, #{memberId})
     </insert>
 
     <select id="selectSomLikeCount" parameterType="Long" resultType="Integer">
         SELECT COUNT(ID)
+        FROM TBL_SOM_LIKE
+        WHERE SOM_ID = #{somId}
+    </select>
+
+    <select id="selectSomLikeList" parameterType="Long" resultType="SomLikeVO">
+        SELECT ID, SOM_ID, MEMBER_ID
         FROM TBL_SOM_LIKE
         WHERE SOM_ID = #{somId}
     </select>
@@ -236,9 +247,14 @@
 
     </select>
 
-    <delete id="deleteSomLike" parameterType="SomVO">
+    <delete id="deleteSomLike" parameterType="SomLikeVO">
         DELETE TBL_SOM_LIKE
         WHERE SOM_ID = #{somId} AND MEMBER_ID = #{memberId}
+    </delete>
+
+    <delete id="deleteSomLikeById" parameterType="Long">
+        DELETE TBL_SOM_LIKE
+        WHERE ID = #{somId}
     </delete>
 
     <resultMap id="SomCheckWithImagesMap" type="com.app.bluecotton.domain.dto.SomCheckResponseDTO">

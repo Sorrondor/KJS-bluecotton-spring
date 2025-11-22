@@ -49,4 +49,10 @@ public interface SomMapper {
     public Boolean selectIsSomLike(SomLikeVO somLikeVO);
 
     public void deleteSomLike(SomLikeVO somLikeVO);
+
+    public List<SomLikeVO> selectSomLikeList(Long somId);
+
+    public void deleteSomLikeById(Long id);
+
+    public void deleteSomJoinById(Long id);
 }
