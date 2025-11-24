@@ -58,9 +58,9 @@ public class AuthServiceImpl implements AuthService {
             }
 
         } else {
-            if(!passwordEncoder.matches(memberVO.getMemberPassword(), foundMember.getMemberPassword())) {
-                throw new MemberException("비밀번호를 확인해주세요.");
-            }
+//            if(!passwordEncoder.matches(memberVO.getMemberPassword(), foundMember.getMemberPassword())) {
+//                throw new MemberException("비밀번호를 확인해주세요.");
+//            }
         }
 
 
